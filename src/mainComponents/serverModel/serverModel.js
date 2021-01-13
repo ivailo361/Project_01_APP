@@ -21,7 +21,7 @@ function ServerModel(props) {
         }, '')
     console.log(correctManufacturer)
     let selected = components.reduce((acc, val) => {
-
+        
     }, [])
 
     return (
@@ -29,7 +29,7 @@ function ServerModel(props) {
             <h1>THIS IS A MANUFACTURER CONFIGURATOR PAGE</h1>
             <div>Server model: <b>{model || 'all'}</b></div>
             <div>
-
+                Some new components
 
             </div>
         </div>
