@@ -1,4 +1,4 @@
-const env = process.env.REACT_APP_STAGE || 'development';
+const env = process.env.NODE_ENV || 'development';
 const config = require('./config')[env];
 
 // import msg from './messages'
