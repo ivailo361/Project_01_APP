@@ -1,6 +1,8 @@
+const env = process.env.NODE_ENV || 'development';
+const config = require('./config')[env];
 
 // import msg from './messages'
-const BASE_URL = "http://localhost:3333"
+const BASE_URL = config.BASE_URL
 
 const createHeader = (method, body) => {
     // const encodeFormData = (body) => {
