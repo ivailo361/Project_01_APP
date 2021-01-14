@@ -1,8 +1,8 @@
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.REACT_APP_STAGE || 'development';
 const config = require('./config')[env];
 
 // import msg from './messages'
-const BASE_URL = "https://also-express-srv.herokuapp.com"
+const BASE_URL = config.URL
 
 const createHeader = (method, body) => {
     // const encodeFormData = (body) => {
