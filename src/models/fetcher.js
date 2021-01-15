@@ -1,5 +1,5 @@
 import config from './config'
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV;
 
 // const config = require('./config')[env];
 
