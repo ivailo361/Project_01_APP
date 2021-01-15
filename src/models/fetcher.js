@@ -14,7 +14,7 @@ const env = process.env.NODE_ENV;
 // import msg from './messages'
 const BASE_URL = config[env].URL
 
-console.log(config)
+
 console.log(env)
 console.log(BASE_URL)
 
