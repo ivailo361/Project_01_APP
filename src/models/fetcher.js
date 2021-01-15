@@ -1,6 +1,8 @@
 
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3333"
 
+console.log(BASE_URL)
+
 const createHeader = (method, body) => {
     // const encodeFormData = (body) => {
     //     return Object.keys(body)
