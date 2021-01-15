@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import HttpsRedirect from 'react-https-redirect'
 import './index.css';
 import App from './App';
 import {
@@ -9,7 +10,9 @@ import {
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <HttpsRedirect>
+      <App />
+    </HttpsRedirect>
   </BrowserRouter>,
   document.getElementById('root')
 );
