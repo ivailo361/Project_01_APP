@@ -12,7 +12,7 @@ const env = process.env.NODE_ENV;
 // const config = require('./config')[env];
 
 // import msg from './messages'
-const BASE_URL = process.env.REACT_APP_API_URL
+const BASE_URL = config[env].URL
 
 
 console.log(env)
