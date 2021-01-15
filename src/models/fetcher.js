@@ -1,22 +1,5 @@
-const config = {
-    development: {
-        URL: "http://localhost:3333",
-        
-    },
-    production: {
-        URL: "https://also-express-srv.herokuapp.com"
-    }
-};
-const env = process.env.NODE_ENV;
 
-// const config = require('./config')[env];
-
-// import msg from './messages'
 const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3333"
-
-
-console.log(env)
-console.log(BASE_URL)
 
 const createHeader = (method, body) => {
     // const encodeFormData = (body) => {
