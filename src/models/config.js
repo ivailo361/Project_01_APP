@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     development: {
         URL: "http://localhost:3333",
         
