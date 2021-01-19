@@ -80,7 +80,7 @@ const Nav = styled.div`
     /* flex-grow: 2;    */
     box-sizing: border-box;
     flex-shrink: 1;
-    width: 80%;
+    width: 90%;
 
     /* flex-wrap: wrap; */
     margin: 0.3em 0 0 0;
@@ -107,14 +107,14 @@ const Sap = styled(Li)`
     width: 7%;
 `
 const Man = styled(Li)`
-    width: 15%;
+    width: 20%;
 
 `
 const Desc = styled(Li)`
-    width: 40%;
+    width: 35%;
 `
 const Qty = styled(Li)`
-    width: 8%;
+    width: 7%;
     justify-content: flex-end;
 `
 const Price = styled(Li)`

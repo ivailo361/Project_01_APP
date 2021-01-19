@@ -4,31 +4,19 @@ import { deleteData, putComponentData } from '../../models/fetcher'
 import useNotifications from '../../models/notification'
 import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
 import { Part, DeleteButton, AddButton, Form, Label, LabelRed, Input, Select } from '../../stylesComponents/inputs'
-import db from '../../storage/database'
-import { getData } from '../../models/fetcher'
 
+const typeCompUrl = '/api/edit/types'
+const serverModelsUrl = '/api/edit/models'
 
-
-
-function ModifyType() {
+function ModifyType(props) {
     const location = useLocation()
-    const currentTypes = db.getTypesComponents()
-    const [typesList, setTypesList] = useState(currentTypes)
-    const currentManufacturers = db.getManufacturerConfigList()
-    const [manufacturerList, setManufacturerList] = useState(currentManufacturers)
+    const { typesList, manufacturerList, setTrigger} = props
 
     const [SelectTypes, setSelectTypes] = useState([])
     const [manufacturerNames, setManufacturerNames] = useState([])
     const [modelsList, setModelsList] = useState([])
 
-    
-    const [trigger, setTrigger] = useState(false)
-    const typeCompUrl = '/api/edit/types'
-    const serverModelsUrl = '/api/edit/models'
-
-    // const [input, setInput] = useState({})
-    // const [newType, setNewType] = useState('')
-    const [inputs, setInputs] = useState({manufacturer: manufacturerList[0]._id});
+    const [inputs, setInputs] = useState({manufacturer: "80001310"});
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
 
     useEffect(() => {
@@ -45,26 +33,16 @@ function ModifyType() {
         })
         setManufacturerNames(names)
         // let defaultMan = inputs.manufacturer ? inputs.manufacturer : manufacturerList[0]._id
-        let man = manufacturerList.find(x => x._id.toString() === inputs.manufacturer.toString()) 
-        let models = man.models.map((x, i) => {
-            return (
-                <option key={i} data-index={man._id} value={x}>{x}</option>
-            )
-        })
-        setModelsList(models)
-    }, [typesList, manufacturerList, inputs])
-
-    useEffect(() => {
-        getData('/api/stock')
-            .then(res => {
-                console.log(res)
-                setTypesList(res[1])
-                db.setTypesComponents(res[1])
-                setManufacturerList(res[0])
-                db.setManufacturerList(res[0])
-
+        let man = manufacturerList.find(x => x.sap.toString() === inputs.manufacturer.toString()) 
+        if (man) {
+            let models = man.models.map((x, i) => {
+                return (
+                    <option key={i} data-index={man._id} value={x}>{x}</option>
+                )
             })
-    }, [trigger])
+            setModelsList(models)
+        } 
+    }, [typesList, manufacturerList, inputs])
 
     const handleInputChange = (event) => {
         event.persist();
@@ -88,17 +66,12 @@ function ModifyType() {
             })
     }
 
-
     const handleDelete = (event, url) => {
         event.preventDefault();
         deleteData(url, inputs)
             .then(res => {
                 if (res.deletedCount >= 1) {
-                    // const deletedTypeName = typesList.find(x => (x._id).toString() === (inputs.id).toString())
-                    // console.log(inputs, typesList)
-                    // console.log(deletedTypeName)
                     setTrigger(state => !state)
-                    // notifyMessage(`${deletedTypeName.type} was successfully deleted`)
                     notifyMessage(`${res.deletedModel} was successfully removed`)
                 } else {
                     errorMessage('Something went wrong please try again later')
