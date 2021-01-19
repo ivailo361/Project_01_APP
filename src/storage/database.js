@@ -31,7 +31,7 @@ function getManufacturerConfigList() {
 function getManufacturerFullData(manufacturer) {
     let producer = links.manufacturer.find(x => x.name === manufacturer)
 
-    return producer
+    return producer ? producer.sap : 'ALL'
 }
 
 function getModels(brand) {
@@ -39,7 +39,10 @@ function getModels(brand) {
     // upperCaseBrand[0] = upperCaseBrand[0].toUpperCase()
     // console.log(upperCaseBrand.join(''))
     let producer = links.manufacturer.find(x => (x.name === brand || x.sap === brand.toString()))
-    let models = producer.models.concat('ALL')
+    let models = ['ALL']
+    if (producer) {
+        models.unshift(...producer.models)
+    }
     return models
 }
 

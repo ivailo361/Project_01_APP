@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
+import styled from 'styled-components';
 import { useParams } from 'react-router-dom'
 import db from '../../storage/database'
+import selectCorrectComponents from '../../models/selectCompoList'
 import SingleModel from './singleModel'
 import ComponentsList from './componentsList'
-import styled from 'styled-components';
+
 
 
 function ServerModel(props) {
     const { model } = useParams()
-    const [show, setShow] = useState(false)
     const { brand } = props
     const components = db.getComponentsData()
     const manufacturerList = db.getManufacturerConfigList()
-    console.log(model, brand)
-    console.log(components)
 
     const correctManufacturer = manufacturerList
         .reduce((acc, val) => {
@@ -23,59 +22,21 @@ function ServerModel(props) {
             return acc
         }, '')
 
-    console.log(correctManufacturer)
-
     const filteredComponents = components.filter(x => x.compatibleSrv)
 
-    console.log(filteredComponents)
-
-    function selectCorrectComponents(data, manufacturer, model, server) {
-        if (server) {
-            // let { manufacturer, compatibleSrv, type } = data
-            return data.reduce((acc, val) => {
-                if (Number(val.manufacturer) === Number(manufacturer) && val.compatibleSrv.indexOf(model) !== -1 && val.type === 'Server') {
-                    return acc.concat(val)
-                }
-                else if (Number(val.manufacturer) === Number(manufacturer) && model === 'ALL' && val.type === 'Server') {
-                    return acc.concat(val)
-                }
-                return acc
-            }, [])
-        } else {
-            return data.reduce((acc, val) => {
-                if (Number(val.manufacturer) === Number(manufacturer) && val.compatibleSrv.indexOf(model) !== -1 && val.type !== 'Server') {
-                    return acc.concat(val)
-                }
-                else if (Number(val.manufacturer) === Number(manufacturer) && model === 'ALL' && val.type !== 'Server') {
-                    return acc.concat(val)
-                }
-                return acc
-            }, [])
-        }
-    }
-
-    let serversOnly = selectCorrectComponents(filteredComponents, correctManufacturer, model, true)
-
-    let componentsOnly = selectCorrectComponents(filteredComponents, correctManufacturer, model, true)
-    // console.log(selected(true))
-    // let serversOnly = selected(true)
-    // let componentsOnly = selected(false)
-
-    // let selected = components.reduce((acc, val) => {
-    //     if (Number(val.manufacturer) === Number)
-    // }, [])
+    const compoList = selectCorrectComponents.bind(undefined, filteredComponents, correctManufacturer, model)
 
     return (
         <div>
             <h1>THIS IS A MANUFACTURER CONFIGURATOR PAGE</h1>
             <div>Server model: <b>{model || 'all'}</b></div>
-            <Button onClick={() => setShow(!show)}>{show ? 'Hide' : 'Show'}</Button>
+            {/* <Button onClick={() => setShow(!show)}>{show ? 'Hide' : 'Show'}</Button> */}
             <Container>
                 <Model>
-                    <SingleModel servers={serversOnly} />
+                    <SingleModel servers={compoList(true)} />
                 </Model>
                 <Component>
-                    <ComponentsList components={componentsOnly}/>
+                    <ComponentsList components={compoList(false)}/>
                 </Component>
             </Container>
         </div>
@@ -98,7 +59,7 @@ const Model = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 30%;
+    width: 25%;
     padding: 0.5rem;
 `
 const Component = styled.div`

@@ -32,9 +32,6 @@ function SingleModel(props) {
 
 
     return (
-        // error !== null
-        //     ? <ErrorMsg message={error} closeMessage={closeMessage} />
-        //     : list
         list
     )
 }
