@@ -6,6 +6,8 @@ import Header from './mainComponents/header/header'
 import Configurator from './pages/configurator/configurator'
 import Brands from './pages/brands/brandConfig'
 import EditPage from './pages/edit/editPage'
+import RegisterPage from './pages/user/registerPage'
+import LoginPage from './pages/user/loginPage'
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
           <Route path="/edit" component={EditPage} />
           <Route path="/configurator/:brand" component={Brands} />
           <Route path="/configurator/" component={Configurator} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/login" component={LoginPage} />
           <Route render={() => (<div>ERROR PAGE</div>)} />
         </Switch>
       </Container>

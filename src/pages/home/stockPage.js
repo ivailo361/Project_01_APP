@@ -5,17 +5,20 @@ import { Content } from '../../stylesComponents/content'
 import ManufacturerPage from '../../pages/manufacturerStock/manufacturerStock'
 import { getData } from '../../models/fetcher'
 import db from '../../storage/database'
-import { ErrorMsg } from '../../mainComponents/messenger/message'
 import useNotifications from '../../models/notification'
+import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
+import useAuth from '../../models/auth'
 
 
 function StockPage() {
     const [list, setList] = useState([])
     const { error, errorMessage, closeMessage} = useNotifications()
+    const { isLoggedIn, message } = useAuth()
 
     let { path } = useRouteMatch();
 
     useEffect(() => {
+        console.log('inside useEffect')
         if (db.getManufacturerList().length <= 1 ) {
             getData('/api/stock')
             .then((res) => {
@@ -28,6 +31,14 @@ function StockPage() {
             setList(db.getManufacturerList())
         }
     }, [])
+
+    if (!isLoggedIn) {
+        return (
+            <div>
+                { <NotificationMsg message={message} closeMessage={() => closeMessage('notify', '/login')} /> }
+            </div>
+        )
+    }
 
     return (
         <Fragment>
