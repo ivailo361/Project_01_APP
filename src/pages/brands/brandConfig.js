@@ -1,14 +1,27 @@
 import React, { Fragment } from 'react'
-import { useParams, useRouteMatch } from 'react-router-dom'
+import { useParams, useRouteMatch, useHistory } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 import Aside from '../../mainComponents/aside/aside'
 import { Content } from '../../stylesComponents/content'
 import ServerModel from '../../mainComponents/serverModel/serverModel'
 import db from '../../storage/database' 
+import useAuth from '../../models/auth'
 
-function Brands(props) {
+function Brands() {
     const { brand } = useParams()
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
+    const history = useHistory()
+    const { isLoggedIn } = useAuth()
+
+    if (!isLoggedIn) {
+        return (
+            <div>
+                <h1>You have to Login first</h1>
+                <button type='button' onClick={() => history.push('/login')} >Login</button>
+            </div>
+        )
+    }
+
     return (
         <Fragment>
             <Aside list={db.getModels(brand)} theme={brand} />

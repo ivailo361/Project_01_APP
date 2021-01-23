@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import useNotifications from '../../models/notification'
 import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
 import { postData } from '../../models/fetcher'
@@ -9,9 +9,8 @@ const initialState = {
     password: '',
 }
 
-function LoginPage() {
+function LoginPage(props) {
     const [input, setInput] = useState(initialState)
-    const location = useLocation()
     const history = useHistory()
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
 
@@ -26,9 +25,10 @@ function LoginPage() {
             .then(res => {
                 if (res.login === 'ok') {
                     notifyMessage(`User ${res.user} was successfully login`)
-                    sessionStorage.setItem('user', JSON.stringify(res.token));
+                    sessionStorage.setItem('user', JSON.stringify(res));
+                    props.login()
                     setTimeout(() => {
-                        history.push('/stock')
+                        history.push('/Stock')
                     }, 2000)
                 }
             })

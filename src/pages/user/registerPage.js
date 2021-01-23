@@ -29,7 +29,6 @@ function RegisterPage() {
         event.preventDefault();
         const answer = verifySubmitData(input)
         if (answer.message === 'ok') {
-            console.log(input)
             postData('/api/stock/register', input)
                 .then(res => {
                     if (Number(res.insertedCount) === 1) {

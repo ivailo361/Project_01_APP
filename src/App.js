@@ -8,22 +8,39 @@ import Brands from './pages/brands/brandConfig'
 import EditPage from './pages/edit/editPage'
 import RegisterPage from './pages/user/registerPage'
 import LoginPage from './pages/user/loginPage'
+import Logout from './pages/user/logoutPage'
+import { useEffect, useState } from 'react'
+import auth from './models/auth'
 
 
 function App() {
+  // const { userData, userAuth } = useAuth()
+  const [ user, setUser ] = useState('')
+  const [refresh, setRefresh] = useState(false)
+
+  useEffect(() => {
+    const { userData } = auth()
+    setUser(userData)
+  }, [refresh])
+
+  const refreshApp = () => {
+    setRefresh(state => !state)
+  }
+
   return (
     <Main className="Main">
-      <Header />
+      <Header userData={user}/>
       <Container>
         <Switch>
-          <Route exact path="/" render={() => <Redirect to='/Stock'/>} />
+          <Route exact path="/" render={() => <Redirect to='/Stock' />} />
           <Route path="/stock" component={StockPage} />
           <Route path="/edit/:id" component={EditPage} />
           <Route path="/edit" component={EditPage} />
           <Route path="/configurator/:brand" component={Brands} />
           <Route path="/configurator/" component={Configurator} />
           <Route path="/register" component={RegisterPage} />
-          <Route path="/login" component={LoginPage} />
+          <Route path="/login" render={() => <LoginPage login={refreshApp} />} />
+          <Route path="/logout" render={() => <Logout logout={refreshApp} />} />
           <Route render={() => (<div>ERROR PAGE</div>)} />
         </Switch>
       </Container>

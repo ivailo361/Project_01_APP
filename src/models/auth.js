@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from 'react'
 
-function useAuth() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [token, setToken] = useState('')
-    const message = 'You have to login first'
+function auth() {
+    let isLoggedIn = false
+    let userData = ''
 
-    useEffect(() => {
-        function checkAuth() {
-            const { user } = sessionStorage
-            if (user) {
-                setIsLoggedIn(true)
-                setToken(user)
-            }
-        }
-        checkAuth()
-
-        return () => {
-            setIsLoggedIn(false)
-            setToken('')
-        }
-    })
-
+    const { user } = sessionStorage
+    if (user) {
+        isLoggedIn = true
+        userData = JSON.parse(user)
+    }
 
     return {
         isLoggedIn,
-        token,
-        message,
+        userData,
     }
 }
 
-export default useAuth
+export default auth
