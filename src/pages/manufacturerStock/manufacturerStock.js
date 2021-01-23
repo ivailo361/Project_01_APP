@@ -4,19 +4,20 @@ import { getData } from '../../models/fetcher'
 import db from '../../storage/database'
 import TypeComponent from '../../mainComponents/listItems/typeComponent'
 import { Block } from '../../stylesComponents/block'
-import { ErrorMsg } from '../../mainComponents/messenger/message'
+import { ErrorMsg, } from '../../mainComponents/messenger/message'
 import useNotifications from '../../models/notification'
 
 
-function ManufacturerStock(props) {
+
+function ManufacturerStock() {
     const { manufacturer } = useParams()
     const [data, setData] = useState(db.getComponentsData())
     const { error, errorMessage, closeMessage } = useNotifications()
 
-
     const manNumber = db.getManufacturerFullData(manufacturer)
 
     useEffect(() => {
+      
         if (data.length === 0) {
             getData('/api/edit')
                 .then((res) => {
@@ -38,17 +39,17 @@ function ManufacturerStock(props) {
 
 
     return (
-        <div>
+        < div >
             <div>THIS IS A WAREHOUSE STOCK PER MANUFACTURER PAGE</div>
             <div>The chosen warehouse is from <b>{manufacturer || 'all'}</b></div>
             {
-            error !== null
-                ? <ErrorMsg message={error} closeMessage={closeMessage} />
-                : <Block>
-                    <TypeComponent dataDB={dataDB} />
-                </Block>
+                error !== null
+                    ? <ErrorMsg message={error} closeMessage={closeMessage} />
+                    : <Block>
+                        <TypeComponent dataDB={dataDB} />
+                    </Block>
             }
-        </div>
+        </div >
 
     )
 }

@@ -10,6 +10,7 @@ import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/messag
 import useNotifications from '../../models/notification'
 import PartDetails from './partDetails'
 import ModifyType from './modifyType'
+import useAuth from '../../models/auth'
 
 
 
@@ -18,6 +19,7 @@ function EditPage() {
     const fileInput = useRef(null)
     const { id } = useParams();
     const { error, notify, errorMessage, notifyMessage, closeMessage } = useNotifications()
+    const { userData } = useAuth()
 
     const links = db.getManufacturerList()
     const data = db.getComponentsData()
@@ -68,6 +70,14 @@ function EditPage() {
                 console.log(e)
                 errorMessage(e.message)
             })
+    }
+
+    if (userData.type !== 'admin') {
+        return (
+            <div>
+                <h1>You do not have sufficient rights to do that. Contact your system admin</h1>
+            </div>
+        )
     }
 
     return (

@@ -10,13 +10,15 @@ const createHeader = (method, body) => {
     //         // .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
     //         .join('&');
     // }
-    const { token } = JSON.parse(sessionStorage.getItem('user')) || ''
+    // const { token } = JSON.parse(sessionStorage.getItem('user')) || ''
+    const user = sessionStorage.getItem('user')
     const header = {
         method: method,
         headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Type': 'application/json',
-            'auth': `${token || ''}`
+            'Authorization': user,
+            // 'auth': `${token || ''}`
         },
         body: JSON.stringify(body)
     }
@@ -38,7 +40,8 @@ function fetcher(url, header) {
 }
 
 function getData(endpoint) {
-    return fetcher(BASE_URL + endpoint)
+    const header = createHeader('GET')
+    return fetcher(BASE_URL + endpoint, header)
 
 }
 
