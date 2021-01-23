@@ -45,12 +45,12 @@ function ServerModel(props) {
 
 export default ServerModel
 
-const Button = styled.button`
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    margin-top: 0.5rem ;
-`
+// const Button = styled.button`
+//     display: block;
+//     box-sizing: border-box;
+//     width: 100%;
+//     margin-top: 0.5rem ;
+// `
 const Container = styled.div`
     display: flex;
     justify-content: flex-start;
