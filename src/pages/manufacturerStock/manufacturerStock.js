@@ -37,7 +37,6 @@ function ManufacturerStock() {
         }
     }, [data, errorMessage])
 
-
     useEffect(() => {
         const dataDB = data.filter(x => {
             if (manNumber === 'ALL') {
@@ -51,13 +50,7 @@ function ManufacturerStock() {
     }, [data, manNumber])
 
     useEffect(() => {
-        let result = dataDB.reduce((acc, v) => {
-            let isMatch = checkForAvailability(v, searchInput)
-            if (isMatch) {
-                return acc.concat(v)
-            }
-            return acc
-        }, [])
+        let result = checkForAvailability(dataDB, searchInput)
         console.log(result)
         setOutData(result)
     }, [searchInput])
@@ -74,14 +67,9 @@ function ManufacturerStock() {
         //     }
         //     return acc
         // }, [])
-        let result = dataDB.reduce((acc, v) => {
-            let isMatch = checkForAvailability(v, searchInput)
-            if (isMatch) {
-                return acc.concat(v)
-            }
-            return acc
-        }, [])
+        let result = checkForAvailability(dataDB, searchInput)
         console.log(result)
+        setOutData(result)
     }
 
     return (
