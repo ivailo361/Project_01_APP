@@ -27,6 +27,7 @@ function App() {
     setRefresh(state => !state)
   }
 
+  console.log('IVO')
   return (
     <Main className="Main">
       <Header userData={user}/>
