@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import db from '../../storage/database'
 import TypeList from './typeList'
 import { Block } from '../../stylesComponents/block'
 
 function TypeComponent(props) {
-    const types = db.getTypesComponents()
+    const [ show, setShow ] = useState(false)
     const { dataDB, dontShow } = props
+    const types = db.getTypesComponents()
+
+    useEffect(() => {
+        if (dataDB.length > 0) {
+            setShow(true)
+        }
+    }, [dataDB])
 
 
     const correctedTypes = () => {
@@ -15,7 +22,7 @@ function TypeComponent(props) {
                     return false
                 }
                 return true
-            })    
+            })
         }
         return types
     }
@@ -31,14 +38,20 @@ function TypeComponent(props) {
         })
 
         return (
-                <Block key={x._id}>
-                    <TypeList type={x.type} comp={matchComp} />
-                </Block>
+            <Block key={x._id}>
+                <TypeList type={x.type} comp={matchComp} />
+            </Block>
         )
     })
 
     return (
-        list
+        <>
+            {
+                show === true
+                    ? list
+                    : null
+            }
+        </>
     )
 }
 

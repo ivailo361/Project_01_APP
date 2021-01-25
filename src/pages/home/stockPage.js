@@ -12,15 +12,17 @@ import useAuth from '../../models/auth'
 
 function StockPage() {
     const [list, setList] = useState([])
+    const [compData, setCompData] = useState(db.getComponentsData())
     const { error, errorMessage, closeMessage} = useNotifications()
     const { isLoggedIn } = useAuth()
+    const manList = db.getManufacturerList()
 
     let { path } = useRouteMatch()
     let history = useHistory()
 
     useEffect(() => {
         // console.log('inside useEffect')
-        if (db.getManufacturerList().length <= 1 ) {
+        if (manList.length <= 1 ) {
             getData('/api/stock')
             .then((res) => {
                 console.log(res)
@@ -29,7 +31,18 @@ function StockPage() {
                 setList(db.getManufacturerList())
             }).catch(e => errorMessage(e.message))
         } else {
-            setList(db.getManufacturerList())
+            setList(manList)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (compData.length === 0) {
+            getData('/api/edit')
+                .then((res) => {
+                    db.setComponentsData(res)
+                    setCompData(res)
+                })
+                .catch(e => errorMessage(e.message))
         }
     }, [])
 
@@ -48,8 +61,8 @@ function StockPage() {
             <Aside list={list} />
             <Content>
                 <Switch>
-                    <Route exact path={path} component={ManufacturerPage}/>
-                    <Route path={`${path}/:manufacturer`} component={ManufacturerPage} />
+                    <Route exact path={path} render={() => <ManufacturerPage data={compData} /> } />
+                    <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} /> } />
                 </Switch>
             </Content>
         </Fragment>

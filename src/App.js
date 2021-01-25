@@ -27,13 +27,13 @@ function App() {
     setRefresh(state => !state)
   }
 
-  console.log('IVO')
+
   return (
     <Main className="Main">
       <Header userData={user}/>
       <Container>
         <Switch>
-          <Route exact path="/" render={() => <Redirect to='/Stock' />} />
+          <Route exact path="/" render={() => <Redirect to='/Stock/ALL' />} />
           <Route path="/stock" component={StockPage} />
           <Route path="/edit/:id" component={EditPage} />
           <Route path="/edit" component={EditPage} />

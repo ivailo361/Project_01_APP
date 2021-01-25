@@ -3,63 +3,44 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-
-import { getData } from '../../models/fetcher'
 import db from '../../storage/database'
 import TypeComponent from '../../mainComponents/listItems/typeComponent'
 import { Block } from '../../stylesComponents/block'
 // import { Input, } from '../../stylesComponents/inputs'
-import { ErrorMsg, } from '../../mainComponents/messenger/message'
-import useNotifications from '../../models/notification'
 import checkForAvailability from '../../models/checkForAvailability'
 
 
 
-function ManufacturerStock() {
+function ManufacturerStock(props) {
     const { manufacturer } = useParams()
     const [searchInput, setSearchInput] = useState('')
-    const [data, setData] = useState(db.getComponentsData())
+    const { data } = props
+    
     const [dataDB, setDataDB] = useState([])
     const [outData, setOutData] = useState([])
-    const { error, errorMessage, closeMessage } = useNotifications()
 
     const manNumber = db.getManufacturerFullData(manufacturer)
 
     useEffect(() => {
-
-        if (data.length === 0) {
-            getData('/api/edit')
-                .then((res) => {
-                    db.setComponentsData(res)
-                    setData(res)
-                })
-                .catch(e => errorMessage(e.message))
-        }
-    }, [data, errorMessage])
-
-    useEffect(() => {
-        const dataDB = data.filter(x => {
+        const res = data.filter(x => {
             if (manNumber === 'ALL') {
                 return x
             } else {
                 return x.manufacturer.toString() === manNumber || x.manufacturer.toString() === undefined
             }
         })
-        setDataDB(dataDB)
-        setOutData(dataDB)
+        setDataDB(res)
+        setOutData(res)
     }, [data, manNumber])
 
     useEffect(() => {
         let result = checkForAvailability(dataDB, searchInput)
-        console.log(result)
         setOutData(result)
-    }, [searchInput])
+    }, [searchInput, dataDB])
 
 
     const searchItem = (e) => {
         e.preventDefault()
-        console.log(searchInput)
-        console.log(dataDB)
         // let result = dataDB.reduce((acc, v) => {
         //     let re = new RegExp(searchInput);
         //     if (re.test(v.sapNum)) {
@@ -86,13 +67,11 @@ function ManufacturerStock() {
                 </Form>
 
             </Header>
-            {
-                error !== null
-                    ? <ErrorMsg message={error} closeMessage={closeMessage} />
-                    : <Block>
+
+                    <Block>
                         <TypeComponent dataDB={outData} />
                     </Block>
-            }
+            
         </div >
 
     )
