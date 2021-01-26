@@ -28,7 +28,7 @@ function EditPage() {
     const [typesList, setTypesList] = useState(currentTypes)
     const currentManufacturers = db.getManufacturerConfigList()
     const [manufacturerList, setManufacturerList] = useState(currentManufacturers)
-    
+
     const [trigger, setTrigger] = useState(false)
 
     useEffect(() => {
@@ -88,8 +88,9 @@ function EditPage() {
             <Aside list={links} />
             <Content>
                 <Block>
-                    {!part
-                        ? <Fragment>
+                    {part
+                        ? <PartDetails part={part} />
+                        : <Fragment>
                             <Part>
                                 <h1>Add new Excel file with database!</h1>
                                 <Form onSubmit={(e) => uploadExcel(e, fileInput)}>
@@ -100,9 +101,9 @@ function EditPage() {
                                     <AddButton type="submit" value="Upload Files" />
                                 </Form>
                             </Part>
-                            <ModifyType typesList={typesList} manufacturerList={manufacturerList} setTrigger={setTrigger}/>
+                            <ModifyType typesList={typesList} manufacturerList={manufacturerList} setTrigger={setTrigger} />
                         </Fragment>
-                        : <PartDetails part={part} />}
+                    }
                 </Block>
             </Content>
         </Fragment>

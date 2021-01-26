@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import styled from 'styled-components'
 import db from '../../storage/database'
 import { putComponentData } from '../../models/fetcher'
 import { Part, AddButton, Div, FormComponent, Label, Select } from '../../stylesComponents/inputs'
@@ -15,6 +16,7 @@ function PartDetails(props) {
     const types = db.getTypesComponents()
     const models = db.getModels(part.manufacturer)
     const serverModels = models.slice(0, models.length - 1)
+    console.log(part)
 
 
     let selectTypes = types.map(x => {
@@ -65,6 +67,10 @@ function PartDetails(props) {
             {notify ? <NotificationMsg message={notify} link={part.manufacturer} closeMessage={closeMessage} /> : null}
             <h1>Edit the chosen component</h1>
             <p>-------------------------</p>
+            <Description>
+                <Sap>{part.manNum}</Sap>
+                <div><i>{part.description}</i></div>
+            </Description>
             <Part>
                 <FormComponent onSubmit={handleSubmit}>
 
@@ -93,4 +99,17 @@ function PartDetails(props) {
 
 export default PartDetails
 
+const Description = styled.div`
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin: 0.5rem;
+    padding: 0.3rem;
+    border: 2px solid #2196F3;
+    border-radius: 0.3rem;
+    /* width: 500px; */
+`
+const Sap = styled.div`
+    padding-right: 1.5rem;
+`
 

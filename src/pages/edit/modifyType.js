@@ -28,7 +28,7 @@ function ModifyType(props) {
         setSelectTypes(types)
         let names = manufacturerList.map(x => {
             return (
-                <option key={x._id} value={x._id}>{x.name}</option>
+                <option key={x._id} value={x.sap}>{x.name}</option>
             )
         })
         setManufacturerNames(names)
