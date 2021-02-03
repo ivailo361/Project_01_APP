@@ -52,6 +52,7 @@ function App() {
 export default App;
 
 const Main = styled.div`
+  position: relative;
   min-height: 100vh;
   height: auto;
   display: flex;

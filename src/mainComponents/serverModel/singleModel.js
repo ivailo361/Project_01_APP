@@ -57,7 +57,9 @@ const Property = styled.div`
 
 `
 const Data = styled.div`
-    flex-grow: 2;  
+    flex-grow: 2; 
+    font-size: 0.9rem; 
+    align-self: center;
 `
 
 const Span = styled.div`

@@ -66,6 +66,7 @@ function importData(endpoint, formData) {
 
 function deleteData(endpoint, body) {
     const header = createHeader('DELETE', body)
+    console.log(header)
     return fetcher(BASE_URL + endpoint, header)
 }
 

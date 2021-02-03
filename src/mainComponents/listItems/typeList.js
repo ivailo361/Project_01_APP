@@ -1,13 +1,14 @@
 import React, { Fragment, useState } from 'react'
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
+import Checkbox from './checkbox'
 
 
 function TypeList(props) {
     const [showContent, setShowContent] = useState(true)
     const history = useHistory();
 
-    const { comp, type } = props
+    const { comp, type, selectedComp, dontShow } = props
 
     const listComp = comp.map((x, index) => {
         return (
@@ -16,12 +17,14 @@ function TypeList(props) {
                     <Sap>{x.sapNum}</Sap>
                     <Man>{x.manNum}</Man>
                     <Desc>{x.description}</Desc>
-                    <Qty><strong>{x.qty}</strong>&nbsp;pcs.</Qty>
+                    <Qty>{x.qty}&nbsp;pcs.</Qty>
                     <Price>{x.price} eur</Price>
                 </Nav>
-
+                {!dontShow
+                    ? <Checkbox id={x.sapNum} selectedComp={selectedComp} />
+                    : null
+                }
                 <Button onClick={() => history.push(`/Edit/${x._id}`)}>Edit</Button>
-
             </Div>
         )
     })
@@ -39,6 +42,8 @@ export default TypeList
 const Div = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
 
 `
 const Button = styled.button`
@@ -57,6 +62,7 @@ const Button = styled.button`
     /* text-shadow: 0.5px 0.5px 0.5px #000; */
     box-shadow: inset 0 0 10px #cccccc;
     padding: 0 0.2rem;
+    font: inherit;
 
 `
 const ButtonHeader = styled.button`
@@ -70,6 +76,7 @@ const ButtonHeader = styled.button`
     border: 2px solid slategrey;
     border-radius: 0.3rem;
     font-weight: bold;
+    font-size: 0.9rem;
     
 `
 
@@ -80,10 +87,12 @@ const Nav = styled.div`
     /* flex-grow: 2;    */
     box-sizing: border-box;
     flex-shrink: 1;
-    width: 90%;
+    width: 85%;
+    font: inherit;
+
 
     /* flex-wrap: wrap; */
-    margin: 0.3em 0 0 0;
+    margin: 0.2rem 0 0 0;
     padding: 0;
 
 `
@@ -95,30 +104,43 @@ const Li = styled.div`
     list-style-type: none;
     text-decoration: none;
 
-    overflow: hidden;
-    border: solid 3px white;
+    /* overflow: hidden; */
+    border: solid 0 white;
+    border-width: 0px 0.2rem 0 0;
+    padding: 2px;
+    height: auto;
     background: #e3e3e4;
+    font: inherit;
+
+    /* text-align: left; */
+    /* font-size: 0.8rem; */
     /* opacity: 50%; */
     /* border-left: 2px solid lightgrey; 
     text-align: center; */
     
 `
 const Sap = styled(Li)`
-    width: 7%;
+    flex-basis: 5%;
+    /* flex-shrink: 1; */
 `
 const Man = styled(Li)`
-    width: 20%;
+    flex-basis: 12%;
+    flex-shrink: 0;
 
 `
 const Desc = styled(Li)`
-    width: 35%;
+    flex-basis: 50%;
+    flex-grow: 4;
+    /* flex-shrink: 4; */
+    /* font-family: 'Times New Roman', Times, serif; */
+
 `
 const Qty = styled(Li)`
-    width: 7%;
+    flex-basis: 5%;
     justify-content: flex-end;
 `
 const Price = styled(Li)`
-    width: 10%;
+    flex-basis: 8%;
     justify-content: flex-end;
 `
 

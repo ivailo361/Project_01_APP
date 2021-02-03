@@ -10,13 +10,13 @@ const serverModelsUrl = '/api/edit/models'
 
 function ModifyType(props) {
     const location = useLocation()
-    const { typesList, manufacturerList, setTrigger} = props
+    const { typesList, manufacturerList, setTrigger } = props
 
     const [SelectTypes, setSelectTypes] = useState([])
     const [manufacturerNames, setManufacturerNames] = useState([])
     const [modelsList, setModelsList] = useState([])
 
-    const [inputs, setInputs] = useState({manufacturer: "80001310"});
+    const [inputs, setInputs] = useState({ manufacturer: "80001310" });
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
 
     useEffect(() => {
@@ -33,7 +33,7 @@ function ModifyType(props) {
         })
         setManufacturerNames(names)
         // let defaultMan = inputs.manufacturer ? inputs.manufacturer : manufacturerList[0]._id
-        let man = manufacturerList.find(x => x.sap.toString() === inputs.manufacturer.toString()) 
+        let man = manufacturerList.find(x => x.sap.toString() === inputs.manufacturer.toString())
         if (man) {
             let models = man.models.map((x, i) => {
                 return (
@@ -41,30 +41,45 @@ function ModifyType(props) {
                 )
             })
             setModelsList(models)
-        } 
+        }
     }, [typesList, manufacturerList, inputs])
-
+    
     const handleInputChange = (event) => {
         event.persist();
         setInputs(inputs => ({ ...inputs, [event.target.name]: event.target.value }));
     }
-
+    
+    const verifyInputData = (input) => {
+        const { model, type } = input
+        if (!model || !type) {
+            throw new Error('You should not add an empty field!')
+        }
+    }
+    
     const handleAdd = (event, url) => {
         event.preventDefault();
-        putComponentData(url, inputs)
-            .then(res => {
-                if (res.insertedCount >= 1) {
-                    setTrigger(state => !state)
-                    notifyMessage(`${res.type} was successfully added`)
-                } else {
-                    errorMessage('Something went wrong please try again later')
-                }
-                setInputs(inputs => ({...{}, manufacturer: inputs.manufacturer }))
-            })
-            .catch(e => {
-                errorMessage(e.message)
-            })
+        try {
+            verifyInputData(inputs)
+            putComponentData(url, inputs)
+                .then(res => {
+                    if (res.insertedCount >= 1) {
+                        setTrigger(state => !state)
+                        notifyMessage(`${res.type} was successfully added`)
+                    } else {
+                        errorMessage('Something went wrong please try again later')
+                    }
+                    setInputs(inputs => ({ ...{}, manufacturer: inputs.manufacturer }))
+                })
+                .catch(e => {
+                    errorMessage(e.message)
+                })
+        }
+        catch (e) {
+            errorMessage(e.message)
+        }
     }
+
+
 
     const handleDelete = (event, url) => {
         event.preventDefault();

@@ -75,10 +75,10 @@ const Button = styled.button`
 `
 
 const Message = styled.div`
-    position: absolute;
-    z-index: 100;
-    right: 0;
-    top: 0;
+    position: fixed;
+    z-index: 10000;
+    top: 90px;
+    right: 10px;
     display: flex;
     align-items: flex-start;
     color: white;
@@ -87,13 +87,15 @@ const Message = styled.div`
     border-radius: 0.3rem;
     width: 400px;
     padding: .3rem;
-    right: 1%;
+    /* right: 1%; */
     /* margin: .5rem auto; */
     /* margin-left: 50%; */
     /* transform: translateX(-50%); */
 `
 
 const Notification = styled(Message)`
+    /* position: sticky;
+    top: 20px; */
     background-color: #7af1a5;
 `
 

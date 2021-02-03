@@ -22,15 +22,25 @@ const FormComponent = styled.form`
 `
 
 const Label = styled.div`
-    font-weight: bold;
+    /* font-weight: bold; */
+    font: bold 14px Arial;
     padding: 0 0 0.3rem 0;
+    /* margin-top: 1rem; */
 `
 const LabelRed = styled(Label)`
     color: #f44336;
 `
 const Input = styled.input`
-    border: 2px solid lightgrey; 
+    &:focus {
+        border: 1px solid #0b7dda;
+        box-shadow: 0 0 2px 3px skyblue;
+        outline: none; 
+    }
+    border: 1px solid lightgrey; 
+    height: 1.5rem;
     border-radius: 0.3rem;
+    padding: 0 0.5rem;
+
 `
 const Select = styled.select`
     border: 2px solid lightgrey; 
@@ -60,8 +70,8 @@ const LabelInput = styled.label`
 const Button = styled.input`
     &:hover {
         background-color: white;
-        font-weight: bold;
     }
+
     border-radius: 0.3rem;
     color: white;
     margin-left: 1rem;

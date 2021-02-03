@@ -4,18 +4,25 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import db from '../../storage/database'
+import { deleteData } from '../../models/fetcher'
 import TypeComponent from '../../mainComponents/listItems/typeComponent'
 import { Block } from '../../stylesComponents/block'
-// import { Input, } from '../../stylesComponents/inputs'
 import checkForAvailability from '../../models/checkForAvailability'
+import useNotifications from '../../models/notification'
+import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
+import { DeleteButton, } from '../../stylesComponents/inputs'
+import ConfirmRequest from '../../mainComponents/confirmation/confirmation'
 
 
 
 function ManufacturerStock(props) {
     const { manufacturer } = useParams()
     const [searchInput, setSearchInput] = useState('')
+    const [markedForDel, setMarkedForDel] = useState([])
+    const [confirmDel, setConfirmDel] = useState(false)
     const { data } = props
-    
+    const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
+
     const [dataDB, setDataDB] = useState([])
     const [outData, setOutData] = useState([])
 
@@ -39,28 +46,47 @@ function ManufacturerStock(props) {
     }, [searchInput, dataDB])
 
 
+    const selectedComp = {
+        addForDel: (id) => {
+            setMarkedForDel(state => [...state, id])
+        },
+        removeForDel: (id) => {
+            let cleared = markedForDel.filter(x => x !== id)
+            setMarkedForDel(cleared)
+        }
+    }
+
+    const deleteSelectedComp = () => {
+        deleteData('/api/stock/delete', markedForDel)
+            .then(res => {
+                notifyMessage(`${res.deletedComponents} components was deleted`)
+                setTimeout(() => {
+                    window.location.assign('/stock')
+                }, 2000);
+            })
+            .catch(e => errorMessage(e.message))
+    }
+
     const searchItem = (e) => {
         e.preventDefault()
-        // let result = dataDB.reduce((acc, v) => {
-        //     let re = new RegExp(searchInput);
-        //     if (re.test(v.sapNum)) {
-        //         return acc.concat(v)
-        //     }
-        //     return acc
-        // }, [])
         let result = checkForAvailability(dataDB, searchInput)
-        console.log(result)
         setOutData(result)
     }
 
+    const confirmation = () => {
+        setConfirmDel(state => !state)
+    }
+
     return (
-        < div >
+        <>
+            {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
+            {notify ? <NotificationMsg message={notify} closeMessage={closeMessage} /> : null}
             <Header>
                 <div>
                     <div>THIS IS A WAREHOUSE STOCK PER MANUFACTURER PAGE</div>
                     <div>The chosen warehouse is from <b>{manufacturer || 'all'}</b></div>
                 </div>
-
+                
                 <Form >
                     <Button type="submit" onClick={searchItem}><FontAwesomeIcon icon={faSearch} /></Button>
                     <Input type="text" placeholder="Search..." name="search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)}></Input>
@@ -68,16 +94,25 @@ function ManufacturerStock(props) {
 
             </Header>
 
-                    <Block>
-                        <TypeComponent dataDB={outData} />
-                    </Block>
-            
-        </div >
+            <Block>
+                <TypeComponent dataDB={outData} selectedComp={selectedComp} />
+            </Block>
+            {
+                confirmDel
+                ? <ConfirmRequest confirm={deleteSelectedComp} cancel={confirmation} message={'Are you sure you want to delete?'}/>
+                : null
+            }
+            <DeleteButton type='button' onClick={confirmation} value="Delete components" />
+        </>
 
     )
 }
 
 export default ManufacturerStock
+
+const Div = styled.div`
+    display: flex;
+`
 
 const Header = styled.div`
     display: flex;
