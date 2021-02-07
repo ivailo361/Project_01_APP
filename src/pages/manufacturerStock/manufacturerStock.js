@@ -12,6 +12,8 @@ import useNotifications from '../../models/notification'
 import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
 import { DeleteButton, } from '../../stylesComponents/inputs'
 import ConfirmRequest from '../../mainComponents/confirmation/confirmation'
+import useAuth from '../../models/auth'
+
 
 
 
@@ -21,6 +23,7 @@ function ManufacturerStock(props) {
     const [markedForDel, setMarkedForDel] = useState([])
     const [confirmDel, setConfirmDel] = useState(false)
     const { data } = props
+    const { userData } = useAuth()
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
 
     const [dataDB, setDataDB] = useState([])
@@ -95,7 +98,7 @@ function ManufacturerStock(props) {
             </Header>
 
             <Block>
-                <TypeComponent dataDB={outData} selectedComp={selectedComp} />
+                <TypeComponent dataDB={outData} selectedComp={selectedComp} dontShow={userData.type !== 'admin'}/>
             </Block>
             {
                 confirmDel
@@ -110,9 +113,6 @@ function ManufacturerStock(props) {
 
 export default ManufacturerStock
 
-const Div = styled.div`
-    display: flex;
-`
 
 const Header = styled.div`
     display: flex;
@@ -124,6 +124,7 @@ const Header = styled.div`
 const Input = styled.input`
     padding: 5px;
     font-size: 14px;
+    width: 15rem;
     border: 1px solid grey;
     /* width: 80%; */
     background: #f1f1f1;

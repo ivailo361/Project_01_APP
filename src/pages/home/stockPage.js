@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Route, Switch, useRouteMatch, useHistory} from 'react-router-dom'
+import { Route, Switch, useRouteMatch, useHistory } from 'react-router-dom'
 import Aside from '../../mainComponents/aside/aside'
 import { Content } from '../../stylesComponents/content'
 import ManufacturerPage from '../../pages/manufacturerStock/manufacturerStock'
@@ -8,12 +8,15 @@ import db from '../../storage/database'
 import useNotifications from '../../models/notification'
 import { ErrorMsg } from '../../mainComponents/messenger/message'
 import useAuth from '../../models/auth'
+import login from '../../stylesComponents/LogRegForm'
+import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
 
 
-function StockPage() {
+function StockPage(props) {
     const [list, setList] = useState([])
+    const { isLoading, setLoading } = props
     const [compData, setCompData] = useState(db.getComponentsData())
-    const { error, errorMessage, closeMessage} = useNotifications()
+    const { error, errorMessage, closeMessage } = useNotifications()
     const { isLoggedIn } = useAuth()
     const manList = db.getManufacturerList()
 
@@ -22,51 +25,66 @@ function StockPage() {
 
     useEffect(() => {
         // console.log('inside useEffect')
-        if (manList.length <= 1 ) {
+        if (manList.length <= 1) {
+            setLoading(true)
             getData('/api/stock')
-            .then((res) => {
-                console.log(res)
-                db.setManufacturerList(res[0])
-                db.setTypesComponents(res[1])
-                setList(db.getManufacturerList())
-            }).catch(e => errorMessage(e.message))
+                .then((res) => {
+                    console.log(res)
+                    setTimeout(() => {
+                        setLoading(false)
+                        db.setManufacturerList(res[0])
+                        db.setTypesComponents(res[1])
+                        setList(db.getManufacturerList())
+                    }, 1000)
+                }).catch(e => errorMessage(e.message))
         } else {
             setList(manList)
         }
-    }, [])
+    }, [manList, setLoading, errorMessage])
 
     useEffect(() => {
         if (compData.length === 0) {
+            setLoading(true)
             getData('/api/edit')
                 .then((res) => {
-                    db.setComponentsData(res)
-                    setCompData(res)
+                    setTimeout(() => {
+                        setLoading(false)
+                        db.setComponentsData(res)
+                        setCompData(res)
+                    }, 1000)
                 })
                 .catch(e => errorMessage(e.message))
-        }
-    }, [])
+        } 
+    }, [compData, setLoading, errorMessage])
 
     if (!isLoggedIn) {
+        
         return (
-            <div>
-                <h1>You have to Login</h1>
-                <button type='button' onClick={() => history.push('/login')} >Login</button>
-            </div>
+            <login.OuterForm>
+                <login.Header>You have to login first</login.Header>
+                <login.Sign type='button' onClick={() => history.push('/login')} >Login</login.Sign>
+            </login.OuterForm>
         )
     }
 
     return (
-        <Fragment>
-            {error ? <ErrorMsg message={error} closeMessage={closeMessage}/> : null}
-            <Aside list={list} />
-            <Content>
-                <Switch>
-                    <Route exact path={path} render={() => <ManufacturerPage data={compData} /> } />
-                    <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} /> } />
-                </Switch>
-            </Content>
-        </Fragment>
+        <>
+            {!isLoading
+                ? <Fragment>
+                    {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
+                    <Aside list={list} />
+                    <Content>
+                        <Switch>
+                            <Route exact path={path} render={() => <ManufacturerPage data={compData} />} />
+                            <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} />} />
+                        </Switch>
+                    </Content>
+                </Fragment>
+                : null
+            }
+        </>
+
     )
 }
 
-export default StockPage
+export default IsLoadingHOC(StockPage, "Loading your data...")

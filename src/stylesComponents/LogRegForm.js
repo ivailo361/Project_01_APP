@@ -10,7 +10,7 @@ const InnerDiv = styled.div`
 `
 
 const Header = styled.div`
-    margin: 2rem 0 1.3rem 0;
+    margin: 1.5rem 0 1.3rem 0;
     font: 400 24px/1.4 Arial;
 `
 const LoginForm = styled.form`
@@ -22,6 +22,11 @@ const LoginForm = styled.form`
 `
 
 const Sign = styled.button`
+    &:hover {
+        transition: background-color 0.4s ease;
+        background-color: #308849;
+        
+    }
     width: 100%;
     height: 1.6rem;
     border: 1px solid #2f8146; 

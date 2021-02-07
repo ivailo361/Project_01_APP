@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
+import styled from 'styled-components';
 import useNotifications from '../../models/notification'
 import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
 import { postData } from '../../models/fetcher'
 import { Label, Input, } from '../../stylesComponents/inputs'
 import login from '../../stylesComponents/LogRegForm'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBuffer } from '@fortawesome/free-brands-svg-icons'
 
 const initialState = {
     email: '',
@@ -70,6 +73,7 @@ function RegisterPage() {
         <login.OuterForm>
             {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
             {notify ? <NotificationMsg message={notify} closeMessage={() => closeMessage('notify', location)} /> : null}
+            <Icon><FontAwesomeIcon icon={faBuffer}/></Icon>
             <login.Header>Register Page</login.Header>
             <login.LoginForm onSubmit={handleSubmit}>
                 <login.InnerDiv >
@@ -93,3 +97,10 @@ function RegisterPage() {
 }
 
 export default RegisterPage
+
+const Icon = styled.div`
+    margin-top: 1.5rem;
+    width: auto;
+    font-size: 3rem;
+    color: dimgray;
+`
