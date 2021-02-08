@@ -8,7 +8,7 @@ function TypeList(props) {
     const [showContent, setShowContent] = useState(true)
     const history = useHistory();
 
-    const { comp, type, selectedComp, dontShow } = props
+    const { comp, type, selectedComp, dontShow, checkBox } = props
 
     const listComp = comp.map((x, index) => {
         return (
@@ -20,7 +20,7 @@ function TypeList(props) {
                     <Qty>{x.qty}&nbsp;pcs.</Qty>
                     <Price>{x.price} eur</Price>
                 </Nav>
-                {!dontShow
+                {checkBox
                     ? <Checkbox id={x.sapNum} selectedComp={selectedComp} />
                     : null
                 }

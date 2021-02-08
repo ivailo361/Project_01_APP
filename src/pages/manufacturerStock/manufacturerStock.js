@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -18,7 +18,7 @@ import useAuth from '../../models/auth'
 
 
 function ManufacturerStock(props) {
-    const { manufacturer } = useParams()
+    const match = useRouteMatch("/stock/:man");
     const [searchInput, setSearchInput] = useState('')
     const [markedForDel, setMarkedForDel] = useState([])
     const [confirmDel, setConfirmDel] = useState(false)
@@ -29,6 +29,7 @@ function ManufacturerStock(props) {
     const [dataDB, setDataDB] = useState([])
     const [outData, setOutData] = useState([])
 
+    const manufacturer = match ? match.params.man : ''
     const manNumber = db.getManufacturerFullData(manufacturer)
 
     useEffect(() => {
@@ -87,7 +88,7 @@ function ManufacturerStock(props) {
             <Header>
                 <div>
                     <div>THIS IS A WAREHOUSE STOCK PER MANUFACTURER PAGE</div>
-                    <div>The chosen warehouse is from <b>{manufacturer || 'all'}</b></div>
+                    <div>The chosen warehouse is from <b>{manufacturer|| 'ALL'}</b></div>
                 </div>
                 
                 <Form >
@@ -98,7 +99,7 @@ function ManufacturerStock(props) {
             </Header>
 
             <Block>
-                <TypeComponent dataDB={outData} selectedComp={selectedComp} dontShow={userData.type !== 'admin'}/>
+                <TypeComponent dataDB={outData} selectedComp={selectedComp} checkBox={userData.type === 'admin'}/>
             </Block>
             {
                 confirmDel

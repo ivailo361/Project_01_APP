@@ -75,10 +75,13 @@ function StockPage(props) {
                     {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
                     <Aside list={list} />
                     <Content>
-                        <Switch>
-                            <Route exact path={path} render={() => <ManufacturerPage data={compData} />} />
-                            <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} />} />
-                        </Switch>
+                        <ManufacturerPage data={compData} />
+                        {/* <Switch> */}
+                            {/* <Route exact path={path} render={() => <ManufacturerPage data={compData} />} /> */}
+                            {/* <Route exact path={path}><ManufacturerPage data={compData} /></Route> */}
+                            {/* <Route path={`${path}/:manufacturer`}><ManufacturerPage data={compData} /></Route> */}
+                            {/* <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} />} /> */}
+                        {/* </Switch> */}
                     </Content>
                 </Fragment>
                 : null

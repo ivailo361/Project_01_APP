@@ -10,7 +10,7 @@ function ComponentsList(props) {
     return (
         <BlockWoBorder>
             <div>A components list</div>
-            <TypeComponent dataDB={components} dontShow={true}/>
+            <TypeComponent dataDB={components} dontShow={true} checkBox={false}/>
         </BlockWoBorder>
     )
 }

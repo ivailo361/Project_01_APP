@@ -5,7 +5,7 @@ import { Block } from '../../stylesComponents/block'
 
 function TypeComponent(props) {
     const [ show, setShow ] = useState(false)
-    const { dataDB, selectedComp, dontShow } = props
+    const { dataDB, selectedComp, dontShow, checkBox } = props
     const types = db.getTypesComponents()
 
     useEffect(() => {
@@ -15,19 +15,19 @@ function TypeComponent(props) {
     }, [dataDB])
 
 
-    // const correctedTypes = () => {
-    //     if (dontShow) {
-    //         return types.filter(x => {
-    //             if (x.type === "Server" || x.type === "undefined") {
-    //                 return false
-    //             }
-    //             return true
-    //         })
-    //     }
-    //     return types
-    // }
+    const correctedTypes = () => {
+        if (dontShow) {
+            return types.filter(x => {
+                if (x.type === "Server" || x.type === "undefined") {
+                    return false
+                }
+                return true
+            })
+        }
+        return types
+    }
 
-    const list = types.map(x => {
+    const list = correctedTypes().map(x => {
         const matchComp = dataDB.filter(y => {
             if (y.type === x.type) {
                 return y
@@ -39,7 +39,7 @@ function TypeComponent(props) {
 
         return (
             <Block key={x._id}>
-                <TypeList type={x.type} comp={matchComp} selectedComp={selectedComp} dontShow={dontShow}/>
+                <TypeList type={x.type} comp={matchComp} selectedComp={selectedComp} dontShow={dontShow} checkBox={checkBox}/>
             </Block>
         )
     })

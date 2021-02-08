@@ -53,6 +53,7 @@ const Property = styled.div`
     align-items: flex-start;
     min-width: 100%;
     justify-content: flex-start;
+    margin-bottom: 0.3rem;
     
 
 `
@@ -64,6 +65,7 @@ const Data = styled.div`
 
 const Span = styled.div`
     min-width: 120px;
+    margin-right: 0.5rem;
     text-align: right;
     font-style: italic;
     font-size: medium;
