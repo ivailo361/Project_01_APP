@@ -15,19 +15,19 @@ function TypeComponent(props) {
     }, [dataDB])
 
 
-    const correctedTypes = () => {
-        if (dontShow) {
-            return types.filter(x => {
-                if (x.type === "Server" || x.type === "undefined") {
-                    return false
-                }
-                return true
-            })
-        }
-        return types
-    }
+    // const correctedTypes = () => {
+    //     if (dontShow) {
+    //         return types.filter(x => {
+    //             if (x.type === "Server" || x.type === "undefined") {
+    //                 return false
+    //             }
+    //             return true
+    //         })
+    //     }
+    //     return types
+    // }
 
-    const list = correctedTypes().map(x => {
+    const list = types.map(x => {
         const matchComp = dataDB.filter(y => {
             if (y.type === x.type) {
                 return y

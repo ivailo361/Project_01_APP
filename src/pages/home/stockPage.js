@@ -24,7 +24,7 @@ function StockPage(props) {
     let history = useHistory()
 
     useEffect(() => {
-        // console.log('inside useEffect')
+        console.log('inside useEffect')
         if (manList.length <= 1) {
             setLoading(true)
             getData('/api/stock')
@@ -40,9 +40,10 @@ function StockPage(props) {
         } else {
             setList(manList)
         }
-    }, [manList, setLoading, errorMessage])
+    }, [])
 
     useEffect(() => {
+        console.log('inside useEffect22')
         if (compData.length === 0) {
             setLoading(true)
             getData('/api/edit')
@@ -55,7 +56,7 @@ function StockPage(props) {
                 })
                 .catch(e => errorMessage(e.message))
         } 
-    }, [compData, setLoading, errorMessage])
+    }, [])
 
     if (!isLoggedIn) {
         

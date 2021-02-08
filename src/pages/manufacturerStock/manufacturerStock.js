@@ -105,7 +105,7 @@ function ManufacturerStock(props) {
                 ? <ConfirmRequest confirm={deleteSelectedComp} cancel={confirmation} message={'Are you sure you want to delete?'}/>
                 : null
             }
-            <DeleteButton type='button' onClick={confirmation} value="Delete components" />
+            {userData.type === 'admin' && <DeleteButton type='button' onClick={confirmation} value="Delete components" />}
         </>
 
     )
