@@ -78,7 +78,7 @@ const Model = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 25%;
+    max-width: 25%;
     padding: 0.5rem;
 `
 const Component = styled.div`
