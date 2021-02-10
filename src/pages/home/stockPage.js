@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Route, Switch, useRouteMatch, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Aside from '../../mainComponents/aside/aside'
 import { Content } from '../../stylesComponents/content'
 import ManufacturerPage from '../../pages/manufacturerStock/manufacturerStock'
@@ -20,7 +20,6 @@ function StockPage(props) {
     const { isLoggedIn } = useAuth()
     const manList = db.getManufacturerList()
 
-    let { path } = useRouteMatch()
     let history = useHistory()
 
     useEffect(() => {

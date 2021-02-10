@@ -28,20 +28,23 @@ function ManufacturerStock(props) {
 
     const [dataDB, setDataDB] = useState([])
     const [outData, setOutData] = useState([])
+    const [showZero, setShowZero] = useState(false)
 
     const manufacturer = match ? match.params.man : ''
     const manNumber = db.getManufacturerFullData(manufacturer)
 
     useEffect(() => {
-        const res = data.filter(x => {
-            if (manNumber === 'ALL') {
-                return x
-            } else {
-                return x.manufacturer.toString() === manNumber || x.manufacturer.toString() === undefined
-            }
-        })
-        setDataDB(res)
-        setOutData(res)
+ 
+            const res = data.filter(x => {
+                if (manNumber === 'ALL') {
+                    return x
+                } else {
+                    return x.manufacturer.toString() === manNumber || x.manufacturer.toString() === undefined
+                }
+            })
+            setDataDB(res)
+            setOutData(res)
+
     }, [data, manNumber])
 
     useEffect(() => {
@@ -81,6 +84,16 @@ function ManufacturerStock(props) {
         setConfirmDel(state => !state)
     }
 
+    const removeZeroComp = () => {
+        setShowZero(state => !state)
+        if (!showZero) {
+            let _dataDB = dataDB.filter(x => Number(x.qty) > 0)
+            return setOutData(_dataDB)
+        }
+        return setOutData(dataDB)
+        // console.log(dataDB)
+    }
+
     return (
         <>
             {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
@@ -90,7 +103,9 @@ function ManufacturerStock(props) {
                     <div>THIS IS A WAREHOUSE STOCK PER MANUFACTURER PAGE</div>
                     <div>The chosen warehouse is from <b>{manufacturer|| 'ALL'}</b></div>
                 </div>
-                
+                <input type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></input>
+                {/* <button type='button' onClick={removeZeroComp}>Hide</button> */}
+
                 <Form >
                     <Button type="submit" onClick={searchItem}><FontAwesomeIcon icon={faSearch} /></Button>
                     <Input type="text" placeholder="Search..." name="search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)}></Input>

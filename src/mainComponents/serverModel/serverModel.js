@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom'
+import { useParams} from 'react-router-dom'
 import db from '../../storage/database'
 import selectCorrectComponents from '../../models/selectCompoList'
 import SingleModel from './singleModel'
@@ -14,6 +14,20 @@ function ServerModel(props) {
     const components = db.getComponentsData()
     const manufacturerList = db.getManufacturerConfigList()
 
+    const [outData, setOutData] = useState([])
+    const [showZero, setShowZero] = useState(false)
+
+    useEffect(() => {
+        let filteredComponents = []
+        if (!showZero) {
+            filteredComponents = components.filter(x => x.compatibleSrv)
+        } else {
+            filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0)    
+        }
+        setOutData(filteredComponents)
+    }, [showZero])
+
+
     const correctManufacturer = manufacturerList
         .reduce((acc, val) => {
             if (val.name.toString() === brand.toString()) {
@@ -22,14 +36,19 @@ function ServerModel(props) {
             return acc
         }, '')
 
-    const filteredComponents = components.filter(x => x.compatibleSrv)
+    
 
-    const compoList = selectCorrectComponents.bind(undefined, filteredComponents, correctManufacturer, model)
+    const compoList = selectCorrectComponents.bind(undefined, outData, correctManufacturer, model)
+
+    const removeZeroComp = () => {
+        setShowZero(state => !state)
+    }
 
     return (
         <div>
             <h1>THIS IS A MANUFACTURER CONFIGURATOR PAGE</h1>
             <div>Server model: <b>{model || 'all'}</b></div>
+            <input type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></input>
             {/* <Button onClick={() => setShow(!show)}>{show ? 'Hide' : 'Show'}</Button> */}
             <Container>
                 <Model>
