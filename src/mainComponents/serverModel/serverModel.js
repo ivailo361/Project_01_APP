@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import db from '../../storage/database'
 import selectCorrectComponents from '../../models/selectCompoList'
 import SingleModel from './singleModel'
 import ComponentsList from './componentsList'
+import InputButton from '../../stylesComponents/button'
 
 
 
@@ -22,7 +23,7 @@ function ServerModel(props) {
         if (!showZero) {
             filteredComponents = components.filter(x => x.compatibleSrv)
         } else {
-            filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0)    
+            filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0)
         }
         setOutData(filteredComponents)
     }, [showZero])
@@ -36,7 +37,7 @@ function ServerModel(props) {
             return acc
         }, '')
 
-    
+
 
     const compoList = selectCorrectComponents.bind(undefined, outData, correctManufacturer, model)
 
@@ -47,15 +48,17 @@ function ServerModel(props) {
     return (
         <div>
             <h1>THIS IS A MANUFACTURER CONFIGURATOR PAGE</h1>
-            <div>Server model: <b>{model || 'all'}</b></div>
-            <input type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></input>
-            {/* <Button onClick={() => setShow(!show)}>{show ? 'Hide' : 'Show'}</Button> */}
+            <Div>
+                <div>Server model: <b>{model || 'all'}</b></div>
+                <InputButton theme={showZero ? 'show' : 'hide'} type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></InputButton>
+            </Div>
+
             <Container>
                 <Model>
                     <SingleModel servers={compoList(true)} />
                 </Model>
                 <Component>
-                    <ComponentsList components={compoList(false)}/>
+                    <ComponentsList components={compoList(false)} />
                 </Component>
             </Container>
         </div>
@@ -70,6 +73,12 @@ export default ServerModel
 //     width: 100%;
 //     margin-top: 0.5rem ;
 // `
+
+const Div = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
 const Container = styled.div`
     display: flex;
     justify-content: flex-start;

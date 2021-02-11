@@ -13,7 +13,7 @@ import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/messag
 import { DeleteButton, } from '../../stylesComponents/inputs'
 import ConfirmRequest from '../../mainComponents/confirmation/confirmation'
 import useAuth from '../../models/auth'
-
+import InputButton from '../../stylesComponents/button'
 
 
 
@@ -103,7 +103,7 @@ function ManufacturerStock(props) {
                     <div>THIS IS A WAREHOUSE STOCK PER MANUFACTURER PAGE</div>
                     <div>The chosen warehouse is from <b>{manufacturer|| 'ALL'}</b></div>
                 </div>
-                <input type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></input>
+                <InputButton type='button' theme={showZero ? 'show' : 'hide'} onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></InputButton>
                 {/* <button type='button' onClick={removeZeroComp}>Hide</button> */}
 
                 <Form >
@@ -163,5 +163,6 @@ const Button = styled.button`
 
 const Form = styled.form`
     display: flex;
+    margin-left: 0.2rem;
 
 `
