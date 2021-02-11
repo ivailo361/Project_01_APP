@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useRouteMatch } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -34,7 +34,6 @@ function ManufacturerStock(props) {
     const manNumber = db.getManufacturerFullData(manufacturer)
 
     useEffect(() => {
- 
             const res = data.filter(x => {
                 if (manNumber === 'ALL') {
                     return x
@@ -43,14 +42,16 @@ function ManufacturerStock(props) {
                 }
             })
             setDataDB(res)
-            setOutData(res)
-
     }, [data, manNumber])
 
     useEffect(() => {
         let result = checkForAvailability(dataDB, searchInput)
-        setOutData(result)
-    }, [searchInput, dataDB])
+        let _dataDB = result
+        if (showZero) {
+            _dataDB = result.filter(x => Number(x.qty) > 0)
+        }
+        setOutData(_dataDB)
+    }, [searchInput, dataDB, showZero])
 
 
     const selectedComp = {
@@ -84,13 +85,8 @@ function ManufacturerStock(props) {
         setConfirmDel(state => !state)
     }
 
-    const removeZeroComp = () => {
+    const removeZeroComp = (e) => {
         setShowZero(state => !state)
-        if (!showZero) {
-            let _dataDB = dataDB.filter(x => Number(x.qty) > 0)
-            return setOutData(_dataDB)
-        }
-        return setOutData(dataDB)
         // console.log(dataDB)
     }
 
