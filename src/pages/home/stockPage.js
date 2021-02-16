@@ -25,16 +25,14 @@ function StockPage(props) {
     useEffect(() => {
         console.log('inside useEffect')
         if (manList.length <= 1) {
-            setLoading(true)
+            isLoggedIn && setLoading(true)
             getData('/api/stock')
                 .then((res) => {
                     console.log(res)
-                    setTimeout(() => {
-                        setLoading(false)
-                        db.setManufacturerList(res[0])
-                        db.setTypesComponents(res[1])
-                        setList(db.getManufacturerList())
-                    }, 1000)
+                    setLoading(false)
+                    db.setManufacturerList(res[0])
+                    db.setTypesComponents(res[1])
+                    setList(db.getManufacturerList())
                 }).catch(e => errorMessage(e.message))
         } else {
             setList(manList)
@@ -44,21 +42,19 @@ function StockPage(props) {
     useEffect(() => {
         console.log('inside useEffect22')
         if (compData.length === 0) {
-            setLoading(true)
+            isLoggedIn && setLoading(true)
             getData('/api/edit')
                 .then((res) => {
-                    setTimeout(() => {
-                        setLoading(false)
-                        db.setComponentsData(res)
-                        setCompData(res)
-                    }, 1000)
+                    setLoading(false)
+                    db.setComponentsData(res)
+                    setCompData(res)
                 })
                 .catch(e => errorMessage(e.message))
-        } 
+        }
     }, [])
 
     if (!isLoggedIn) {
-        
+
         return (
             <login.OuterForm>
                 <login.Header>You have to login first</login.Header>
@@ -76,10 +72,10 @@ function StockPage(props) {
                     <Content>
                         <ManufacturerPage data={compData} />
                         {/* <Switch> */}
-                            {/* <Route exact path={path} render={() => <ManufacturerPage data={compData} />} /> */}
-                            {/* <Route exact path={path}><ManufacturerPage data={compData} /></Route> */}
-                            {/* <Route path={`${path}/:manufacturer`}><ManufacturerPage data={compData} /></Route> */}
-                            {/* <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} />} /> */}
+                        {/* <Route exact path={path} render={() => <ManufacturerPage data={compData} />} /> */}
+                        {/* <Route exact path={path}><ManufacturerPage data={compData} /></Route> */}
+                        {/* <Route path={`${path}/:manufacturer`}><ManufacturerPage data={compData} /></Route> */}
+                        {/* <Route path={`${path}/:manufacturer`} render={() => <ManufacturerPage data={compData} />} /> */}
                         {/* </Switch> */}
                     </Content>
                 </Fragment>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components';
 import useNotifications from '../../models/notification'
@@ -8,6 +8,7 @@ import { Label, Input, } from '../../stylesComponents/inputs'
 import login from '../../stylesComponents/LogRegForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuffer } from '@fortawesome/free-brands-svg-icons'
+import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
 
 const initialState = {
     email: '',
@@ -16,57 +17,67 @@ const initialState = {
 
 function LoginPage(props) {
     const [input, setInput] = useState(initialState)
+    const { isLoading, setLoading } = props
     const history = useHistory()
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
-
     const handleInputChange = (event) => {
         event.preventDefault();
         setInput(input => ({ ...input, [event.target.name]: event.target.value }));
     }
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        postData('/api/stock/login', input)
-            .then(res => {
-                if (res.login === 'ok') {
-                    notifyMessage(`User ${res.user} was successfully login`)
-                    sessionStorage.setItem('user', JSON.stringify(res));
-                    props.login()
-                    setTimeout(() => {
-                        history.push('/Stock')
-                    }, 2000)
-                }
-            })
-            .catch(e => {
-                errorMessage(e.message)
-            })
+        setLoading(true)
+        setTimeout(() => {
+            postData('/api/stock/login', input)
+                .then(res => {
+                    if (res.login === 'ok') {
+                        setLoading(true)
+                        notifyMessage(`User ${res.user} was successfully login`)
+                        sessionStorage.setItem('user', JSON.stringify(res));
+                        props.login()
+                        setTimeout(() => {
+                            history.push('/Stock')
+                        }, 2000)
+                    }
+                })
+                .catch(e => {
+                    setLoading(false)
+                    errorMessage(e.message)
+                })
+        }, 1000)
+
     }
 
 
     return (
-        <login.OuterForm>
+        <>
             {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
             {notify ? <NotificationMsg message={notify} closeMessage={() => closeMessage('notify', '/stock')} /> : null}
-            <Icon><FontAwesomeIcon icon={faBuffer}/></Icon>
-            <login.Header>Sign in to server config</login.Header>
-            <login.LoginForm onSubmit={handleSubmit}>
-                <login.InnerDiv >
-                    <Label>Email</Label>
-                    <Input name='email' type='email' value={input.email || ''} onChange={handleInputChange}></Input>
-                </login.InnerDiv>
-                <login.InnerDiv>
-                    <Label>Password</Label>
-                    <Input name='password' type='password' value={input.password || ''} onChange={handleInputChange}></Input>
-                </login.InnerDiv>
-                <login.InnerDiv>
-                    <login.Sign type='submit'>Sign</login.Sign>
-                </login.InnerDiv>
-            </login.LoginForm>
-        </login.OuterForm>
+            <login.OuterForm>
+                < Icon > <FontAwesomeIcon icon={faBuffer} /></Icon>
+                <login.Header>Sign in to server config</login.Header>
+                <login.LoginForm onSubmit={handleSubmit}>
+                    <login.InnerDiv >
+                        <Label>Email</Label>
+                        <Input name='email' type='email' value={input.email || ''} onChange={handleInputChange}></Input>
+                    </login.InnerDiv>
+                    <login.InnerDiv>
+                        <Label>Password</Label>
+                        <Input name='password' type='password' value={input.password || ''} onChange={handleInputChange}></Input>
+                    </login.InnerDiv>
+                    <login.InnerDiv>
+                        <login.Sign type='submit'>Sign</login.Sign>
+                    </login.InnerDiv>
+                </login.LoginForm>
+
+            </login.OuterForm >
+        </>
     )
 }
 
-export default LoginPage
+export default IsLoadingHOC(LoginPage, "Loading your data...")
 
 const Icon = styled.div`
     margin-top: 1.5rem;
