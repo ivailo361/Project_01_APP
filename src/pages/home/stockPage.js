@@ -23,45 +23,49 @@ function StockPage(props) {
     let history = useHistory()
 
     useEffect(() => {
-        console.log('inside useEffect')
-        if (manList.length <= 1) {
-            isLoggedIn && setLoading(true)
-            getData('/api/stock')
-                .then((res) => {
-                    console.log(res)
-                    setLoading(false)
-                    db.setManufacturerList(res[0])
-                    db.setTypesComponents(res[1])
-                    setList(db.getManufacturerList())
-                }).catch(e => errorMessage(e.message))
-        } else {
-            setList(manList)
+        setList(manList)
+        if (isLoggedIn) {
+            fetchData()
         }
-    }, [])
 
-    useEffect(() => {
-        console.log('inside useEffect22')
-        if (compData.length === 0) {
-            isLoggedIn && setLoading(true)
-            getData('/api/edit')
-                .then((res) => {
-                    setLoading(false)
-                    db.setComponentsData(res)
-                    setCompData(res)
-                })
-                .catch(e => errorMessage(e.message))
+    }, [isLoggedIn])
+
+    const fetchData = async () => {
+        if (manList.length <= 1 || compData.length === 0) {
+            try {
+                isLoggedIn && setLoading(true)
+                let [ types, comp ] = await Promise.all([getData('/api/stock'), getData('/api/edit')])
+                setLoading(false)
+                db.setManufacturerList(types[0])
+                db.setTypesComponents(types[1])
+                setList(db.getManufacturerList())
+                db.setComponentsData(comp)
+                setCompData(comp)
+            }
+            catch (e) {
+                setLoading(false)
+                errorMessage(e.message)
+                setTimeout(() => {
+                    if (e.message === 'jwt expired') {
+                        history.push('/logout')
+                    }
+                }, 3000)
+            }
         }
-    }, [])
+    }
+
 
     if (!isLoggedIn) {
 
         return (
+
             <login.OuterForm>
                 <login.Header>You have to login first</login.Header>
                 <login.Sign type='button' onClick={() => history.push('/login')} >Login</login.Sign>
             </login.OuterForm>
         )
     }
+
 
     return (
         <>
