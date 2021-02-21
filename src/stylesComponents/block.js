@@ -6,6 +6,8 @@ const Block = styled.div`
   flex-direction: column;
   border-top: 2px solid lightgrey; 
   padding: 0.5rem;
+
+  /* margin-top: 0.5rem; */
 `
 
 export {

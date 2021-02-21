@@ -8,7 +8,6 @@ import ComponentsList from './componentsList'
 import InputButton from '../../stylesComponents/button'
 
 
-
 function ServerModel(props) {
     const { model } = useParams()
     const { brand } = props
@@ -17,6 +16,22 @@ function ServerModel(props) {
 
     const [outData, setOutData] = useState([])
     const [showZero, setShowZero] = useState(false)
+
+    const [marked, setMarked] = useState([])
+    const [filtered, setFiltered] = useState([])
+    const allComponents = db.getComponentsData()
+
+    useEffect(() => {
+        let filtered = marked.map(x => {
+            return allComponents.find(y => y.sapNum === x)
+        })
+        setFiltered(filtered)
+        console.log(marked)
+    }, [marked])
+
+    useEffect(() => {
+        setMarked([])
+    }, [model])
 
     useEffect(() => {
         let filteredComponents = []
@@ -27,7 +42,20 @@ function ServerModel(props) {
         }
         setOutData(filteredComponents)
     }, [showZero])
+    
+    const selectedComp = {
+        add: (id) => {
+            setMarked(state => [...state, id])
+        },
+        remove: (id) => {
+            let cleared = marked.filter(x => x !== id)
+            setMarked(cleared)
+        },
+        isSelected: (id) => {
+            return marked.indexOf(id) > -1;
 
+        }
+    }
 
     const correctManufacturer = manufacturerList
         .reduce((acc, val) => {
@@ -45,20 +73,21 @@ function ServerModel(props) {
         setShowZero(state => !state)
     }
 
+    const ChangeButton = () => <InputButton theme={showZero ? 'show' : 'hide'} type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></InputButton>
+
     return (
         <div>
             <h1>THIS IS A MANUFACTURER CONFIGURATOR PAGE</h1>
             <Div>
                 <div>Server model: <b>{model || 'all'}</b></div>
-                <InputButton theme={showZero ? 'show' : 'hide'} type='button' onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></InputButton>
             </Div>
 
             <Container>
                 <Model>
-                    <SingleModel servers={compoList(true)} />
+                    <SingleModel servers={compoList(true)} selectedComp={selectedComp} />
                 </Model>
                 <Component>
-                    <ComponentsList components={compoList(false)} />
+                    <ComponentsList components={compoList(false)} changeButton={<ChangeButton/>} filtered={filtered} selectedComp={selectedComp} />
                 </Component>
             </Container>
         </div>

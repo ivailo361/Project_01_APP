@@ -5,7 +5,7 @@ import { Block } from '../../stylesComponents/block'
 
 function TypeComponent(props) {
     const [ show, setShow ] = useState(false)
-    const { dataDB, selectedComp, dontShow, checkBox } = props
+    const { dataDB, selectedComp, dontShow, checkBoxName } = props
     const types = db.getTypesComponents()
 
     useEffect(() => {
@@ -39,7 +39,7 @@ function TypeComponent(props) {
 
         return (
             <Block key={x._id}>
-                <TypeList type={x.type} comp={matchComp} selectedComp={selectedComp} dontShow={dontShow} checkBox={checkBox}/>
+                <TypeList type={x.type} comp={matchComp} selectedComp={selectedComp} checkBoxName={checkBoxName} />
             </Block>
         )
     })

@@ -16,8 +16,6 @@ function PartDetails(props) {
     const types = db.getTypesComponents()
     const models = db.getModels(part.manufacturer)
     const serverModels = models.slice(0, models.length - 1)
-    console.log(part)
-
 
     let selectTypes = types.map(x => {
         return (

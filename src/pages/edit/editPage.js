@@ -71,7 +71,7 @@ function EditPage(props) {
                 }, 3000);
             })
             .catch(e => {
-                console.log(e)
+                setLoading(false)
                 errorMessage(e.message)
             })
     }

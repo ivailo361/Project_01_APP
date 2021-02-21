@@ -51,9 +51,9 @@ function ModifyType(props) {
     
     const verifyInputData = (input) => {
         const { model, type } = input
-        if (!model || !type) {
+        if (!model && !type) {
             throw new Error('You should not add an empty field!')
-        }
+        } 
     }
     
     const handleAdd = (event, url) => {

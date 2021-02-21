@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import Checkbox from './checkbox'
@@ -8,7 +8,12 @@ function TypeList(props) {
     const [showContent, setShowContent] = useState(true)
     const history = useHistory();
 
-    const { comp, type, selectedComp, checkBox } = props
+    const { comp, type, selectedComp, checkBoxName } = props
+
+    // useEffect(() => {
+    //     console.log('ivo')
+    // })
+
 
     const listComp = comp.map((x, index) => {
         return (
@@ -18,12 +23,9 @@ function TypeList(props) {
                     <Man>{x.manNum}</Man>
                     <Desc>{x.description}</Desc>
                     <Qty>{x.qty}&nbsp;pcs.</Qty>
-                    <Price>{x.price} lv</Price>
+                    <Price>{x.price}</Price>
                 </Nav>
-                {checkBox
-                    ? <Checkbox id={x.sapNum} selectedComp={selectedComp} />
-                    : null
-                }
+                    <Checkbox id={x.sapNum} selectedComp={selectedComp} checkBoxName={checkBoxName} />
                 <Button onClick={() => history.push(`/Edit/${x._id}`)}>Edit</Button>
             </Div>
         )

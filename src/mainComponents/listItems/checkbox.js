@@ -1,18 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 
 function Checkbox(props) {
     const [checked, setChecked] = useState(false);
-    const { id, selectedComp } = props;
+    const { id, selectedComp, checkBoxName } = props;
+    // const [checked, setChecked] = useState(selectedComp.isSelected(id));
+
+    useEffect(() => {
+        let isTrue = selectedComp.isSelected(id)
+        setChecked(isTrue)
+    })
 
     const action = (id) => {
         if (!checked) {
-            selectedComp.addForDel(id)
+            selectedComp.add(id)
         } else {
-            selectedComp.removeForDel(id)
+            selectedComp.remove(id)
         }
         setChecked(!checked)
     }
+
 
     return (
         <Div>
@@ -22,7 +29,7 @@ function Checkbox(props) {
                     onChange={() => action(id)}
                 />
             </label>
-            <Text>Del me!</Text>
+            <Text>{checkBoxName}</Text>
         </Div>
     );
 }

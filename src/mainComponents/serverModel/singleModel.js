@@ -1,14 +1,15 @@
 
 import React from 'react'
 import styled from 'styled-components';
+import Checkbox from '../listItems/checkbox'
 
 function SingleModel(props) {
-    const { servers } = props
+    const { servers, selectedComp } = props
 
 
     const list = servers.map(x => {
         return (
-           
+
             <Server key={x._id}>
                 <Property>
                     <Span>ManNum: </Span>
@@ -25,6 +26,12 @@ function SingleModel(props) {
                 <Property>
                     <Span>Price: </Span>
                     <Data>{x.price}</Data>
+                </Property>
+                <Property>
+                    <Span>Select</Span>
+                    <Data>
+                        <Checkbox id={x.sapNum} selectedComp={selectedComp} checkBox={false} />
+                    </Data>
                 </Property>
             </Server>
         )

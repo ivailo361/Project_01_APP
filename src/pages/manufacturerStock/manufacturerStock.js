@@ -55,12 +55,16 @@ function ManufacturerStock(props) {
 
 
     const selectedComp = {
-        addForDel: (id) => {
+        add: (id) => {
             setMarkedForDel(state => [...state, id])
         },
-        removeForDel: (id) => {
+        remove: (id) => {
             let cleared = markedForDel.filter(x => x !== id)
             setMarkedForDel(cleared)
+        },
+        isSelected: (id) => {
+            return markedForDel.indexOf(id) > -1;
+
         }
     }
 
@@ -110,7 +114,7 @@ function ManufacturerStock(props) {
             </Header>
 
             <Block>
-                <TypeComponent dataDB={outData} selectedComp={selectedComp} checkBox={userData.type === 'admin'}/>
+                <TypeComponent dataDB={outData} selectedComp={selectedComp} checkBoxName='Del me' />
             </Block>
             {
                 confirmDel
