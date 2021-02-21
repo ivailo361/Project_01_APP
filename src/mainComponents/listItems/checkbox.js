@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 
 function Checkbox(props) {
-    const [checked, setChecked] = useState(false);
     const { id, selectedComp } = props;
+    const [checked, setChecked] = useState(selectedComp.isSelected(id));
 
     const action = (id) => {
         if (!checked) {

@@ -61,6 +61,9 @@ function ManufacturerStock(props) {
         removeForDel: (id) => {
             let cleared = markedForDel.filter(x => x !== id)
             setMarkedForDel(cleared)
+        },
+        isSelected: (id) => {
+            return markedForDel.indexOf(id) > -1;
         }
     }
 
