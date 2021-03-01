@@ -35,14 +35,8 @@ function getManufacturerFullData(manufacturer) {
 }
 
 function getModels(brand) {
-    // let upperCaseBrand = brand.split('')
-    // upperCaseBrand[0] = upperCaseBrand[0].toUpperCase()
-    // console.log(upperCaseBrand.join(''))
     let producer = links.manufacturer.find(x => (x.name === brand || x.sap === brand.toString()))
-    let models = ['ALL']
-    if (producer) {
-        models.unshift(...producer.models)
-    }
+    let models = [...(producer || {models: []}).models, 'ALL']
     return models
 }
 

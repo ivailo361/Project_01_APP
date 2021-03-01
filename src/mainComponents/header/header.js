@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import ListItems from '../listItems/navigation'
 import styled from 'styled-components';
+import { authContext } from '../../models/context'
 
 const headerList = (type) => {
 
@@ -18,20 +19,27 @@ const headerList = (type) => {
     return header
 }
 
-function Header(props) {
-    const { userData } = props
+function Header() {
+    const auth = useContext(authContext)
+    const userData = JSON.parse(sessionStorage.getItem('user'))
+    const { user, type } = userData || {}
+
+    useEffect(() => {
+        console.log(user)
+
+    }, [auth])
 
     return (
         <HeaderDiv>
             <Button onClick={() => window.location.assign('/Stock')}>
                 <Img src="/ALSO-Holding-AG.png" /*width="80" height="80" style={{ color: "black", filter: "invert(100%) sepia(0%) saturate(0%) hue-rotate(360deg) brightness(102%) contrast(102%)" }} */ alt=""></Img>
             </Button>
-            {userData 
-                ? <Span>Welcome {userData.user}</Span>
+            {user 
+                ? <Span>Welcome {user}</Span>
                 : null 
             }
             <Nav >
-                <ListItems nav={headerList(userData.type)} />
+                <ListItems nav={headerList(type)} />
             </Nav>
         </HeaderDiv>
     )

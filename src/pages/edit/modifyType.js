@@ -68,7 +68,7 @@ function ModifyType(props) {
                     } else {
                         errorMessage('Something went wrong please try again later')
                     }
-                    setInputs(inputs => ({ ...{}, manufacturer: inputs.manufacturer }))
+                    setInputs({manufacturer: inputs.manufacturer})
                 })
                 .catch(e => {
                     errorMessage(e.message)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation, useRouteMatch } from 'react-router-dom'
 import db from '../../storage/database'
 import selectCorrectComponents from '../../models/selectCompoList'
 import SingleModel from './singleModel'
@@ -8,30 +8,17 @@ import ComponentsList from './componentsList'
 import InputButton from '../../stylesComponents/button'
 
 
-function ServerModel(props) {
-    const { model } = useParams()
-    const { brand } = props
+function ServerModel() {
+    const match = useRouteMatch('/Configurator/:brand/:model')
+    const model = match ? match.params.model : 'ALL'
+
     const components = db.getComponentsData()
-    const manufacturerList = db.getManufacturerConfigList()
 
     const [outData, setOutData] = useState([])
     const [showZero, setShowZero] = useState(false)
 
     const [marked, setMarked] = useState([])
     const [filtered, setFiltered] = useState([])
-    const allComponents = db.getComponentsData()
-
-    useEffect(() => {
-        let filtered = marked.map(x => {
-            return allComponents.find(y => y.sapNum === x)
-        })
-        setFiltered(filtered)
-        console.log(marked)
-    }, [marked])
-
-    useEffect(() => {
-        setMarked([])
-    }, [model])
 
     useEffect(() => {
         let filteredComponents = []
@@ -41,8 +28,15 @@ function ServerModel(props) {
             filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0)
         }
         setOutData(filteredComponents)
-    }, [showZero])
-    
+    }, [showZero, components])
+
+    useEffect(() => {
+        let filtered = marked.map(x => {
+            return components.find(y => y.sapNum === x)
+        })
+        setFiltered(filtered)
+    }, [marked, components])
+
     const selectedComp = {
         add: (id) => {
             setMarked(state => [...state, id])
@@ -57,17 +51,17 @@ function ServerModel(props) {
         }
     }
 
-    const correctManufacturer = manufacturerList
-        .reduce((acc, val) => {
-            if (val.name.toString() === brand.toString()) {
-                return acc + val.sap
-            }
-            return acc
-        }, '')
+    // const correctManufacturer = manufacturerList
+    //     .reduce((acc, val) => {
+    //         if (val.name.toString() === brand.toString()) {
+    //             return acc + val.sap
+    //         }
+    //         return acc
+    //     }, '')
 
 
 
-    const compoList = selectCorrectComponents.bind(undefined, outData, correctManufacturer, model)
+    const compoList = selectCorrectComponents.bind(undefined, outData, model)
 
     const removeZeroComp = () => {
         setShowZero(state => !state)

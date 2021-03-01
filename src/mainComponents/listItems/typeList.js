@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'
 import Checkbox from './checkbox'
@@ -7,6 +7,7 @@ import Checkbox from './checkbox'
 function TypeList(props) {
     const [showContent, setShowContent] = useState(true)
     const history = useHistory();
+    const userData = JSON.parse(sessionStorage.getItem('user'))
 
     const { comp, type, selectedComp, checkBoxName } = props
 
@@ -26,7 +27,7 @@ function TypeList(props) {
                     <Price>{x.price}</Price>
                 </Nav>
                     <Checkbox id={x.sapNum} selectedComp={selectedComp} checkBoxName={checkBoxName} />
-                <Button onClick={() => history.push(`/Edit/${x._id}`)}>Edit</Button>
+                <Button disabled={userData.type === 'guest'} onClick={() => history.push(`/Edit/${x._id}`)}>Edit</Button>
             </Div>
         )
     })

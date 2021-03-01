@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components';
 import useNotifications from '../../models/notification'
@@ -9,6 +9,7 @@ import login from '../../stylesComponents/LogRegForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuffer } from '@fortawesome/free-brands-svg-icons'
 import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
+import { authContext } from '../../models/context'
 
 const initialState = {
     email: '',
@@ -17,9 +18,11 @@ const initialState = {
 
 function LoginPage(props) {
     const [input, setInput] = useState(initialState)
-    const { isLoading, setLoading } = props
+    const { setLoading } = props
     const history = useHistory()
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
+    const auth = useContext(authContext)
+
     const handleInputChange = (event) => {
         event.preventDefault();
         setInput(input => ({ ...input, [event.target.name]: event.target.value }));
@@ -35,11 +38,9 @@ function LoginPage(props) {
                     if (res.login === 'ok') {
                         setLoading(true)
                         notifyMessage(`User ${res.user} was successfully login`)
-                        sessionStorage.setItem('user', JSON.stringify(res));
-                        props.login()
-                        setTimeout(() => {
+                        auth.signIn(res, setTimeout(() => {
                             history.push('/Stock')
-                        }, 2000)
+                        }, 2000))
                     }
                 })
                 .catch(e => {
@@ -49,6 +50,30 @@ function LoginPage(props) {
         }, 1000)
 
     }
+
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     setLoading(true)
+    //     setTimeout(() => {
+    //         postData('/api/stock/login', input)
+    //             .then(res => {
+    //                 if (res.login === 'ok') {
+    //                     setLoading(true)
+    //                     notifyMessage(`User ${res.user} was successfully login`)
+    //                     sessionStorage.setItem('user', JSON.stringify(res));
+    //                     props.login()
+    //                     setTimeout(() => {
+    //                         history.push('/Stock')
+    //                     }, 2000)
+    //                 }
+    //             })
+    //             .catch(e => {
+    //                 setLoading(false)
+    //                 errorMessage(e.message)
+    //             })
+    //     }, 1000)
+
+    // }
 
 
     return (

@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Redirect } from 'react-router-dom'
 import db from '../../storage/database'
+import { authContext } from '../../models/context'
 
 
 
-function Logout(props) {
+function Logout() {
+    const auth = useContext(authContext)
 
     useEffect(() => {
-        sessionStorage.removeItem('user')
-        db.setComponentsData([])
-        db.setTypesComponents([])
-        db.setManufacturerList([])
-        props.logout()
-    }, [props])
+        auth.signOut(() => {
+            db.setComponentsData([])
+            db.setTypesComponents([])
+            db.setManufacturerList([])
+        })
+    }, [auth])
   
     return (
             <Redirect to="/login" />

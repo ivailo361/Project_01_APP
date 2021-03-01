@@ -10,10 +10,6 @@ function IsLoadingHOC(WrappedComp, loadingMessage) {
         const setLoadingState = isComponentLoading => {
             setLoading(isComponentLoading)
         }
-
-        // if (!isLoggedIn) {
-        //     return <WrappedComp {...props} isLoading={isLoading} setLoading={setLoadingState} />
-        // }
         
         return (
             <>  

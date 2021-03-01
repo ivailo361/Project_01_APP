@@ -45,6 +45,8 @@ const Input = styled.input`
 const Select = styled.select`
     border: 2px solid lightgrey; 
     border-radius: 0.3rem;
+    padding: 0.1rem;
+    overflow-y: hidden;
 `
 
 const InputFile = styled.input`

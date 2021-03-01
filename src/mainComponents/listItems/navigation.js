@@ -4,7 +4,6 @@ import { useLocation, useRouteMatch } from 'react-router-dom'
 
 
 
-
 function ListItems(props) {
     const [value, setValue] = useState('')
     const { pathname } = useLocation()
@@ -40,7 +39,7 @@ function ListItems(props) {
                     conf={conf}
                     theme={theme || x}
                     marked={value === i ? (theme || x) : ''}
-                    onClick={(e) => {
+                    onClick={() => {
                         setValue(i)
                         // e.target.setAttribute('marked', true)
                     }}>

@@ -7,8 +7,6 @@ import { getData } from '../../models/fetcher'
 import db from '../../storage/database'
 import useNotifications from '../../models/notification'
 import { ErrorMsg } from '../../mainComponents/messenger/message'
-import useAuth from '../../models/auth'
-import login from '../../stylesComponents/LogRegForm'
 import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
 
 
@@ -17,23 +15,23 @@ function StockPage(props) {
     const { isLoading, setLoading } = props
     const [compData, setCompData] = useState(db.getComponentsData())
     const { error, errorMessage, closeMessage } = useNotifications()
-    const { isLoggedIn } = useAuth()
     const manList = db.getManufacturerList()
+    const userData = JSON.parse(sessionStorage.getItem('user'))
 
     let history = useHistory()
 
     useEffect(() => {
         setList(manList)
-        if (isLoggedIn) {
+        if (userData) {
             fetchData()
         }
-
-    }, [isLoggedIn])
+        console.log(userData)
+    }, [])
 
     const fetchData = async () => {
         if (manList.length <= 1 || compData.length === 0) {
             try {
-                isLoggedIn && setLoading(true)
+                setLoading(true)
                 let [ types, comp ] = await Promise.all([getData('/api/stock'), getData('/api/edit')])
                 setLoading(false)
                 db.setManufacturerList(types[0])
@@ -49,22 +47,22 @@ function StockPage(props) {
                     if (e.message === 'jwt expired') {
                         history.push('/logout')
                     }
-                }, 3000)
+                }, 2000)
             }
         }
     }
 
 
-    if (!isLoggedIn) {
+    // if (!isLoggedIn) {
 
-        return (
+    //     return (
 
-            <login.OuterForm>
-                <login.Header>You have to login first</login.Header>
-                <login.Sign type='button' onClick={() => history.push('/login')} >Login</login.Sign>
-            </login.OuterForm>
-        )
-    }
+    //         <login.OuterForm>
+    //             <login.Header>You have to login first</login.Header>
+    //             <login.Sign type='button' onClick={() => history.push('/login')} >Login</login.Sign>
+    //         </login.OuterForm>
+    //     )
+    // }
 
 
     return (

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components'
-import { useParams, } from 'react-router-dom'
+import { useRouteMatch, } from 'react-router-dom'
 import db from '../../storage/database'
 import { getData, importData } from '../../models/fetcher'
 import Aside from '../../mainComponents/aside/aside'
@@ -10,17 +10,17 @@ import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/messag
 import useNotifications from '../../models/notification'
 import PartDetails from './partDetails'
 import ModifyType from './modifyType'
-import useAuth from '../../models/auth'
 import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
 
 
 
 function EditPage(props) {
+    const match = useRouteMatch("/edit/:id");
+    const id = match ? match.params.id : ''
+    
     const [part, setPart] = useState(null)
     const fileInput = useRef(null)
-    const { id } = useParams();
     const { error, notify, errorMessage, notifyMessage, closeMessage } = useNotifications()
-    const { userData } = useAuth()
     const { isLoading, setLoading } = props
 
     const links = db.getManufacturerList()
@@ -44,7 +44,6 @@ function EditPage(props) {
         console.log('inside')
         getData('/api/stock')
             .then(res => {
-                console.log(res)
                 setTypesList(res[1])
                 db.setTypesComponents(res[1])
                 setManufacturerList(res[0])
@@ -76,13 +75,6 @@ function EditPage(props) {
             })
     }
 
-    if (userData.type !== 'admin') {
-        return (
-            <div>
-                <h1>You do not have sufficient rights to do that. Contact your system admin</h1>
-            </div>
-        )
-    }
 
     return (
         <>

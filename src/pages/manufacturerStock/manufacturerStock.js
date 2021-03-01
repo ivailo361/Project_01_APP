@@ -12,7 +12,6 @@ import useNotifications from '../../models/notification'
 import { ErrorMsg, NotificationMsg } from '../../mainComponents/messenger/message'
 import { DeleteButton, } from '../../stylesComponents/inputs'
 import ConfirmRequest from '../../mainComponents/confirmation/confirmation'
-import useAuth from '../../models/auth'
 import InputButton from '../../stylesComponents/button'
 
 
@@ -23,8 +22,8 @@ function ManufacturerStock(props) {
     const [markedForDel, setMarkedForDel] = useState([])
     const [confirmDel, setConfirmDel] = useState(false)
     const { data } = props
-    const { userData } = useAuth()
     const { error, notify, notifyMessage, errorMessage, closeMessage } = useNotifications()
+    const userData = JSON.parse(sessionStorage.getItem('user'))
 
     const [dataDB, setDataDB] = useState([])
     const [outData, setOutData] = useState([])
@@ -104,13 +103,11 @@ function ManufacturerStock(props) {
                     <div>The chosen warehouse is from <b>{manufacturer|| 'ALL'}</b></div>
                 </div>
                 <InputButton type='button' theme={showZero ? 'show' : 'hide'} onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></InputButton>
-                {/* <button type='button' onClick={removeZeroComp}>Hide</button> */}
 
                 <Form >
                     <Button type="submit" onClick={searchItem}><FontAwesomeIcon icon={faSearch} /></Button>
                     <Input type="text" placeholder="Search..." name="search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)}></Input>
                 </Form>
-
             </Header>
 
             <Block>
