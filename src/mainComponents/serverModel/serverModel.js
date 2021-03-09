@@ -8,27 +8,30 @@ import ComponentsList from './componentsList'
 import InputButton from '../../stylesComponents/button'
 
 
-function ServerModel() {
+function ServerModel(props) {
     const match = useRouteMatch('/Configurator/:brand/:model')
     const model = match ? match.params.model : 'ALL'
-
+    const manNumber = db.getManufacturerFullData(props.brand)
+    
     const components = db.getComponentsData()
-
+    
     const [outData, setOutData] = useState([])
     const [showZero, setShowZero] = useState(false)
-
+    
     const [marked, setMarked] = useState([])
     const [filtered, setFiltered] = useState([])
-
+    
     useEffect(() => {
         let filteredComponents = []
+        console.log(components)
         if (!showZero) {
-            filteredComponents = components.filter(x => x.compatibleSrv)
+            filteredComponents = components.filter(x => x.compatibleSrv && +x.manufacturer === +manNumber)
         } else {
-            filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0)
+            filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0 && +x.manufacturer === +manNumber)
         }
+        console.log(filteredComponents)
         setOutData(filteredComponents)
-    }, [showZero, components])
+    }, [showZero, components, manNumber])
 
     useEffect(() => {
         let filtered = marked.map(x => {
