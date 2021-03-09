@@ -23,13 +23,11 @@ function ServerModel(props) {
     
     useEffect(() => {
         let filteredComponents = []
-        console.log(components)
         if (!showZero) {
             filteredComponents = components.filter(x => x.compatibleSrv && +x.manufacturer === +manNumber)
         } else {
             filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0 && +x.manufacturer === +manNumber)
         }
-        console.log(filteredComponents)
         setOutData(filteredComponents)
     }, [showZero, components, manNumber])
 
@@ -39,6 +37,10 @@ function ServerModel(props) {
         })
         setFiltered(filtered)
     }, [marked, components])
+
+    useEffect(() => {
+        setMarked([])
+    }, [model])
 
     const selectedComp = {
         add: (id) => {
