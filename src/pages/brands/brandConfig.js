@@ -15,7 +15,7 @@ function Brands() {
         <Fragment>
             <Aside list={db.getModels(brand)} theme={brand} />
             <Content>
-                <ServerModel />
+                <ServerModel brand={brand}/>
                 {/* <Switch>
                     <Route exact path={path} render={() => <ServerModel brand={brand} />}  />
                     <Route path={`${path}/:model`} component={ServerModel}  />
