@@ -3,20 +3,15 @@ import React, { useState, createContext } from 'react'
 
 const authContext = createContext();
 
-// const fakeAuth = {
-//     isAuthenticated: false,
-//     signIn(cb) {
-//         fakeAuth.isAuthenticated = true;
-//         setTimeout(cb, 100); // fake async
-//     },
-//     signOut(cb) {
-//         fakeAuth.isAuthenticated = false;
-//         setTimeout(cb, 100);
-//     }
-// };
 
 function useProvideAuth() {
-    const [userData, setUserData] = useState(null);
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    const [userData, setUserData] = useState(user);
+
+    // useEffect(() => {
+    //     const userData = JSON.parse(sessionStorage.getItem('user'))
+    //     setUserData(userData)
+    // }, [])
 
     const signIn = (res, cb) => {
         sessionStorage.setItem('user', JSON.stringify(res));

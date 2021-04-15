@@ -20,14 +20,15 @@ const headerList = (type) => {
 }
 
 function Header() {
-    const auth = useContext(authContext)
-    const userData = JSON.parse(sessionStorage.getItem('user'))
+    const { userData } = useContext(authContext)
+    // const userData = JSON.parse(sessionStorage.getItem('user'))
+    // const { user, type } = userData || {}
     const { user, type } = userData || {}
 
     useEffect(() => {
-        console.log(user)
+        console.log(userData)
 
-    }, [auth])
+    }, [userData])
 
     return (
         <HeaderDiv>

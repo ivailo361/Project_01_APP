@@ -52,6 +52,10 @@ function ManufacturerStock(props) {
         setOutData(_dataDB)
     }, [searchInput, dataDB, showZero])
 
+    useEffect(() => {
+        setMarkedForDel([])
+    }, [manufacturer])
+
 
     const selectedComp = {
         add: (id) => {

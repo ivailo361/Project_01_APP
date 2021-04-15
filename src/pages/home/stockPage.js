@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import Aside from '../../mainComponents/aside/aside'
 import { Content } from '../../stylesComponents/content'
@@ -8,6 +8,7 @@ import db from '../../storage/database'
 import useNotifications from '../../models/notification'
 import { ErrorMsg } from '../../mainComponents/messenger/message'
 import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
+import { authContext } from '../../models/context'
 
 
 function StockPage(props) {
@@ -16,16 +17,18 @@ function StockPage(props) {
     const [compData, setCompData] = useState(db.getComponentsData())
     const { error, errorMessage, closeMessage } = useNotifications()
     const manList = db.getManufacturerList()
-    const userData = JSON.parse(sessionStorage.getItem('user'))
+    // const userData = JSON.parse(sessionStorage.getItem('user'))
+    const { userData } = useContext(authContext)
+    const { user } = userData || {}
 
     let history = useHistory()
 
     useEffect(() => {
         setList(manList)
-        if (userData) {
+        if (user) {
             fetchData()
         }
-        console.log(userData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchData = async () => {
