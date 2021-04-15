@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { useParams, useLocation, useRouteMatch } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 import db from '../../storage/database'
 import selectCorrectComponents from '../../models/selectCompoList'
 import SingleModel from './singleModel'
@@ -20,6 +20,8 @@ function ServerModel(props) {
     
     const [marked, setMarked] = useState([])
     const [filtered, setFiltered] = useState([])
+
+    const compoList = selectCorrectComponents.bind(undefined, outData, model)
     
     useEffect(() => {
         let filteredComponents = []
@@ -55,18 +57,6 @@ function ServerModel(props) {
 
         }
     }
-
-    // const correctManufacturer = manufacturerList
-    //     .reduce((acc, val) => {
-    //         if (val.name.toString() === brand.toString()) {
-    //             return acc + val.sap
-    //         }
-    //         return acc
-    //     }, '')
-
-
-
-    const compoList = selectCorrectComponents.bind(undefined, outData, model)
 
     const removeZeroComp = () => {
         setShowZero(state => !state)

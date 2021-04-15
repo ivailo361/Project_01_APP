@@ -14,7 +14,7 @@ function Configurator() {
     
     return (
         <Div>
-            <div>CHOOSE UP YOUR BRAND</div>
+            <div style={{'textAlign':'center'}}><b>CHOOSE YOUR BRAND</b></div>
             <Nav >
                 <ListItems conf='true' nav={brands} />
             </Nav>

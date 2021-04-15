@@ -103,8 +103,8 @@ function ManufacturerStock(props) {
             {notify ? <NotificationMsg message={notify} closeMessage={closeMessage} /> : null}
             <Header>
                 <div>
-                    <div>THIS IS A WAREHOUSE STOCK PER MANUFACTURER PAGE</div>
-                    <div>The chosen warehouse is from <b>{manufacturer|| 'ALL'}</b></div>
+                    <div>AVAILABLE ITEMS ON STOCK SEPARATED BY MANUFACTURER</div>
+                    <div>The chosen manufacturer is <b>{manufacturer|| 'ALL'}</b></div>
                 </div>
                 <InputButton type='button' theme={showZero ? 'show' : 'hide'} onClick={removeZeroComp} value={showZero ? 'Show 0' : 'Hide 0'}></InputButton>
 

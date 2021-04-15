@@ -10,7 +10,7 @@ function ComponentsList(props) {
 
     return (
         <BlockWoBorder>
-            <Header>A components list</Header>
+            <Header>An appropriate components list for the chosen model</Header>
             <Div>
                 {changeButton}
                 <Download filtered={filtered}/>

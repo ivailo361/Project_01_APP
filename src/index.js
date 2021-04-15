@@ -10,9 +10,7 @@ import {
 
 ReactDOM.render(
   <BrowserRouter>
-    {/* <HttpsRedirect> */}
       <App />
-    {/* </HttpsRedirect> */}
   </BrowserRouter>,
   document.getElementById('root')
 );

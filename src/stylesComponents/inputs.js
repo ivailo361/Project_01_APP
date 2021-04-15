@@ -36,6 +36,7 @@ const Input = styled.input`
         box-shadow: 0 0 2px 3px skyblue;
         outline: none; 
     }
+    font: normal 16px Arial;
     border: 1px solid lightgrey; 
     height: 1.5rem;
     border-radius: 0.3rem;
@@ -47,6 +48,7 @@ const Select = styled.select`
     border-radius: 0.3rem;
     padding: 0.1rem;
     overflow-y: hidden;
+    font: normal 16px Arial;
 `
 
 const InputFile = styled.input`
