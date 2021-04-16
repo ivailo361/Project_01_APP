@@ -28,5 +28,5 @@ export default Download
 
 const Input = styled(InputButton)`
     margin: 0.5rem 0;
-    align-self: flex-end;
+    /* align-self: flex-end; */
 `

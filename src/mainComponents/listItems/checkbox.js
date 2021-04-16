@@ -9,7 +9,7 @@ function Checkbox(props) {
     useEffect(() => {
         let isTrue = selectedComp.isSelected(id)
         setChecked(isTrue)
-    })
+    }, [selectedComp, id])
 
     const action = (id) => {
         if (!checked) {

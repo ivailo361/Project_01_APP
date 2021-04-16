@@ -17,11 +17,11 @@ import IsLoadingHOC from '../../mainComponents/loading/loadingHOK'
 function EditPage(props) {
     const match = useRouteMatch("/edit/:id");
     const id = match ? match.params.id : ''
-    
+
     const [part, setPart] = useState(null)
     const fileInput = useRef(null)
     const { error, notify, errorMessage, notifyMessage, closeMessage } = useNotifications()
-    const { isLoading, setLoading } = props
+    const { setLoading } = props
 
     const links = db.getManufacturerList()
     const data = db.getComponentsData()
@@ -36,7 +36,7 @@ function EditPage(props) {
     useEffect(() => {
         let part = data.find(x => x._id === id)
         setPart(part)
-        setLoading(false)
+        // setLoading(false)
 
     }, [data, id])
 
@@ -52,61 +52,73 @@ function EditPage(props) {
             })
     }, [trigger])
 
-    const uploadExcel = (e, fileInput) => {
-        e.preventDefault();
-        setLoading(true)
-        const file = fileInput.current.files;
-        const formData = new FormData();
+    const uploadExcel = async (e, fileInput) => {
+        try {
+            e.preventDefault();
 
-        formData.append("avatar", file[0]);
-        formData.append("text", 'some text');
+            setLoading(true)
+            const file = fileInput.current.files;
+            const formData = new FormData();
+            formData.append("avatar", file[0]);
+            formData.append("text", 'some text');
 
-        importData('/api/edit', formData)
-            .then(res => {
-                setLoading(false)
-                notifyMessage(res)
-                setTimeout(() => {
-                    window.location.assign('/stock')
-                }, 3000);
-            })
-            .catch(e => {
-                setLoading(false)
-                errorMessage(e.message)
-            })
+            let res = await importData('/api/edit', formData)
+            setLoading(false)
+            notifyMessage(res)
+            setTimeout(() => {
+                window.location.assign('/stock')
+            }, 3000);
+        }
+        catch (e) {
+            setLoading(false)
+            errorMessage(e.message)
+        }
+
+
+        // importData('/api/edit', formData)
+        //     .then(res => {
+        //         setLoading(false)
+        //         notifyMessage(res)
+        //         setTimeout(() => {
+        //             window.location.assign('/stock')
+        //         }, 3000);
+        //     })
+        //     .catch(e => {
+        //         setLoading(false)
+        //         errorMessage(e.message)
+        //     })
     }
 
 
     return (
         <>
-            {!isLoading
-                ? <Fragment>
-                    {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
-                    {notify ? <NotificationMsg message={notify} closeMessage={closeMessage} /> : null}
+            <Fragment>
+                {error ? <ErrorMsg message={error} closeMessage={closeMessage} /> : null}
+                {notify ? <NotificationMsg message={notify} closeMessage={closeMessage} /> : null}
 
-                    <Aside list={links} />
-                    <Content>
-                        <Block>
-                            {part
-                                ? <PartDetails part={part} />
-                                : <Fragment>
-                                    <Part>
-                                        <h1>Add new Excel file with database!</h1>
-                                        <Form onSubmit={(e) => uploadExcel(e, fileInput)}>
-                                            <div>
-                                                <LabelInput htmlFor="files">Upload DB file</LabelInput>
-                                                <InputFile type="file" id="files" name="files" multiple ref={fileInput} />
-                                            </div>
-                                            <AddButton type="submit" value="Upload Files" />
-                                        </Form>
-                                    </Part>
-                                    <ModifyType typesList={typesList} manufacturerList={manufacturerList} setTrigger={setTrigger} />
-                                </Fragment>
-                            }
-                        </Block>
-                    </Content>
-                </Fragment>
-                : null
-            }
+                <Aside list={links} />
+                <Content>
+                    <Block>
+                        {part
+                            ? <PartDetails part={part} />
+                            : <Fragment>
+                                <Part>
+                                    <h1>Add latest stock data from SAP!</h1>
+                                    <Form onSubmit={(e) => uploadExcel(e, fileInput)}>
+                                        <div>
+                                            <LabelInput htmlFor="files">Upload .xlsx file</LabelInput>
+                                            <InputFile type="file" id="files" name="files" multiple ref={fileInput} />
+                                        </div>
+                                        <AddButton type="submit" value="Upload Files" />
+                                    </Form>
+                                </Part>
+                                <ModifyType typesList={typesList} manufacturerList={manufacturerList} setTrigger={setTrigger} />
+                            </Fragment>
+                        }
+                    </Block>
+                </Content>
+            </Fragment>
+
         </>
     )
 }
