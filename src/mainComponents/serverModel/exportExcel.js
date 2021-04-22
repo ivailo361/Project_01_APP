@@ -10,15 +10,20 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 function Download(props) {
     const { filtered } = props
+    console.log(filtered)
 
 
     return (
         <ExcelFile filename='ExportedCompo' element={<Input theme='export' type='button' value='Export'></Input>}>
             <ExcelSheet data={filtered} name="serverConfig">
+                <ExcelColumn label="sapNum" value="sapNum" />
                 <ExcelColumn label="manNum" value="manNum" />
                 <ExcelColumn label="description" value="description" />
                 <ExcelColumn label="quantity" value="qty" />
-                <ExcelColumn label="price"value='price' />
+                <ExcelColumn label="price" value='price' />
+                <ExcelColumn label="type" value='type' />
+                <ExcelColumn label="compatibleSrv"value={col => col.compatibleSrv.join(", ")} />
+
             </ExcelSheet>
         </ExcelFile>
     );
