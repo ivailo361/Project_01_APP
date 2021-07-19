@@ -25,7 +25,7 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/logout" component={Logout} />
             <PrivateRoute />
-            <Route render={() => (<div>ERROR PAGE</div>)} />
+            <Route render={() => (<div>ERROR PAGE!!!</div>)} />
           </Switch>
         </Container>
       </Main>
