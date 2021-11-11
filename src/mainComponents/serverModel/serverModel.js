@@ -31,6 +31,7 @@ function ServerModel(props) {
             filteredComponents = components.filter(x => x.compatibleSrv && x.qty > 0 && +x.manufacturer === +manNumber)
         }
         setOutData(filteredComponents)
+        setFiltered(compoList(false))
     }, [showZero, components, manNumber])
 
     useEffect(() => {

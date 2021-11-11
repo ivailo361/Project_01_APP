@@ -1,6 +1,6 @@
 export default {
     development: {
-        URL: "http://localhost:3333",
+        URL: "http://localhost:3333"
 
     },
     production: {
