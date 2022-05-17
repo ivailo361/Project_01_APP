@@ -1,11 +1,11 @@
 
 // const BASE_URL = process.env.REACT_APP_API_URL || "https://also.ivmar.site:8443"
 const windowsURL = window.location.href
-const re = new RegExp("http://localhost:9000", "i")
+const re = new RegExp("http://172.168.1.88", "i")
 
 
-const BASE_URL = re.test(windowsURL) ? "http://172.168.1.88:3333" : "https://express.ivmar.site:8443"
-
+// const BASE_URL = re.test(windowsURL) ? "http://172.168.1.88:3333" : "https://express.ivmar.site:8443"
+const BASE_URL = "https://express.ivmar.site:8443";
 
 
 const createHeader = (method, body) => {
@@ -45,7 +45,7 @@ function fetcher(url, header) {
 }
 
 function getData(endpoint) {
-    console.log(window.location.href)
+    console.log(`This should be a href: ${window.location.href}`)
     const header = createHeader('GET')
     return fetcher(BASE_URL + endpoint, header)
 

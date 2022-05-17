@@ -1,7 +1,7 @@
 change nginx /conf.d  default.conf to
     it is not a must, you can leave a default state
     
- listen       80;
+    listen       80;
     listen  [::]:80;
     server_name  localhost;
     root   /usr/share/nginx/html;
