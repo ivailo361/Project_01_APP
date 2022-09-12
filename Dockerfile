@@ -12,7 +12,8 @@ RUN yarn run build
 
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
-
+RUN rm /etc/nginx/conf.d/default.conf
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 # FROM node:16.13.0-alpine3.14 AS build
 # WORKDIR /app
 # COPY package* yarn.lock ./
@@ -20,3 +21,4 @@ COPY --from=build /app/build /usr/share/nginx/html
 # COPY public ./public
 # COPY src ./src
 # RUN sh -c "tail -F anything"
+

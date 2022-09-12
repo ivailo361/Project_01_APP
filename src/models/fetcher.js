@@ -4,8 +4,8 @@ const windowsURL = window.location.href
 const re = new RegExp("http://172.168.1.88", "i")
 
 
-// const BASE_URL = re.test(windowsURL) ? "http://172.168.1.88:3333" : "https://express.ivmar.site:8443"
-const BASE_URL = "https://express.ivmar.site:8443";
+const BASE_URL = re.test(windowsURL) ? "http://172.168.1.88:3333" : "https://express.ivmar.site"
+// const BASE_URL = "https://express.ivmar.site:8443";
 
 
 const createHeader = (method, body) => {
